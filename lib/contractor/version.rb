@@ -1,3 +1,3 @@
-module Contractor
+class Contractor
   VERSION = "0.1.0"
 end

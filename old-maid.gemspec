@@ -23,8 +23,8 @@ Gem::Specification.new do |spec|
   end
 
   spec.add_runtime_dependency 'rake', '~> 10.2'
-  spec.add_runtime_dependency 'minimum-term'
-  spec.add_runtime_dependency "activesupport", ["~> 4.2"]
+  spec.add_runtime_dependency 'minimum-term', '~> 0.1'
+  spec.add_runtime_dependency "activesupport", "~> 4.2"
 
   spec.add_development_dependency 'bundler', '~> 1.9'
   spec.add_development_dependency 'rake', '~> 10.0'

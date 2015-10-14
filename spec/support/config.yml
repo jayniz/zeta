@@ -1,2 +1,28 @@
-test:
-  repositories:
+common: &common
+  service_name: test_service
+  contracts_path: contracts
+
+with_inline_services:
+  <<: *common
+  services:
+    service_1:
+      github:
+        repo: username/service_1
+        branch: master
+        path: contracts
+    service_2:
+      github:
+        repo: username/service_2
+        branch: production
+        path: contracts
+
+with_remote_services_list:
+  <<: *common
+  services_file:
+    file: 'services.yml'
+    github:
+      repo: username/repo
+      branch: master
+
+production:
+  <<: *common

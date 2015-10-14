@@ -1,8 +1,8 @@
 require 'yaml'
 require 'active_support/core_ext/hash/indifferent_access'
-require 'contractor/version'
+require 'old-maid/version'
 
-class Contractor
+class OldMaid
   attr_reader :config
 
   def initialize(config_file, env)

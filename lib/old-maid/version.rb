@@ -1,3 +1,3 @@
-class Contractor
+class OldMaid
   VERSION = "0.1.0"
 end

@@ -17,6 +17,7 @@ class OldMaid
 
     def update_contracts
       @mutex.synchronize do
+        puts "Updating #{cache_dir}" if debug
         update_other_contracts
         update_own_contracts
       end
@@ -26,6 +27,7 @@ class OldMaid
     def contracts_fulfilled?
       @mutex.synchronize do
         i = MinimumTerm::Infrastructure.new(cache_dir)
+        i.convert_all!
         i.contracts_fulfilled?
       end
     end
@@ -63,6 +65,10 @@ class OldMaid
         @config = env_config
     end
 
+    def debug
+      !ENV['TEST']
+    end
+
     private
 
     def fetch_service_contracts(service_name, config)
@@ -74,9 +80,15 @@ class OldMaid
         FileUtils.rm_f(file)
 
         File.open(file, 'w') do |out|
-          out.puts LocalOrRemoteFile.new(config.merge(file: contract)).read
+          contract = LocalOrRemoteFile.new(config.merge(file: contract, debug: debug)).read
+          raise "Invalid contract:\n\n#{contract}\n#{'~'*80}" unless contract_looks_valid?(contract)
+          out.puts contract
         end
       end
+    end
+
+    def contract_looks_valid?(contract)
+      contract.downcase.start_with?("# data structures")
     end
 
     def update_other_contracts
@@ -89,6 +101,7 @@ class OldMaid
       contract_files.each do |file|
         source_file = File.join(@config[:contracts_path], file)
         target_file = File.join(cache_dir, @config[:service_name], file)
+        puts "cp #{source_file} #{target_file}" if debug
         FileUtils.rm_f(target_file)
         FileUtils.cp(source_file, target_file) if File.exists?(source_file)
       end
@@ -102,7 +115,7 @@ class OldMaid
       if config[:services]
         return config[:services]
       elsif config[:services_file]
-        file = LocalOrRemoteFile.new(config[:services_file])
+        file = LocalOrRemoteFile.new(config[:services_file].merge(debug: debug))
         services = YAML.load(file.read)
         begin
           services.with_indifferent_access

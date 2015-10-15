@@ -1,7 +1,7 @@
 common: &common
   service_name: test_service
   contracts_path: spec/support/contracts/valid
-  contracts_cache_path: spec/support/contracts/valid/cache
+  contracts_cache_path: spec/support/contracts/valid/.cache
 
 with_inline_services:
   <<: *common

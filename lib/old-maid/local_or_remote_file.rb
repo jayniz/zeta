@@ -25,14 +25,22 @@ class OldMaid::LocalOrRemoteFile
   end
 
   def read_from_github
-    http_get github_url
+    self.class.http_get(github_url, debug)
   end
 
-  def http_get(url)
-    HTTParty.get url
+  def self.http_get(url, debug)
+    print "GET #{url}... " if debug
+    result = HTTParty.get url
+    raise "Not found" if result.code == 404
+    print "OK\n" if debug
+    result
   rescue
-    puts url
+    print "ERROR\n" if debug
     raise
+  end
+
+  def debug
+    !!@params[:debug]
   end
 
   def github_url

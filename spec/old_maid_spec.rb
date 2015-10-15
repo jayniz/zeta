@@ -4,6 +4,12 @@ describe OldMaid do
   let(:config_file){ File.expand_path(File.join(__FILE__, '..', 'support', 'config.yml')) }
   let(:old_maid){ OldMaid.new(config_file: config_file, env: :with_inline_services) }
 
+  after(:all) do
+    # Clean up
+    FileUtils.rm_rf(File.join(Dir.pwd, 'spec', 'support', 'contracts', 'valid', '.cache'))
+    FileUtils.rm_rf(File.join(Dir.pwd, 'spec', 'support', 'contracts', 'valid', '.cache'))
+  end
+
   context "defaults" do
 
     it "config_file in config/old-maid.yml" do
@@ -11,7 +17,9 @@ describe OldMaid do
       expect{
         m = OldMaid.new(env: :master)
         m.update_contracts
-      }.to raise_error "No such file or directory - #{default}"
+      }.to raise_error do |error|
+        expect(error.message.include?(default)).to be true
+      end
     end
 
     it "environment defaults to rails env, if defined" do
@@ -43,7 +51,7 @@ describe OldMaid do
         "https://raw.githubusercontent.com/username/service_2/production/contracts/consume.mson",
       ]
       urls.each do |url|
-        expect(HTTParty).to receive(:get).with(url).and_return("Some MSON")
+        expect(OldMaid::LocalOrRemoteFile).to receive(:http_get).with(url, false).and_return("# Data structures")
       end
 
       old_maid.update_contracts
@@ -77,7 +85,7 @@ YAML
     end
 
     it 'updates the contracts' do
-      expect(HTTParty).to receive(:get).with(services_url).and_return(remote_services_list)
+      expect(OldMaid::LocalOrRemoteFile).to receive(:http_get).with(services_url, false).and_return(remote_services_list)
       urls = [
         "https://raw.githubusercontent.com/username/service_1/master/contracts/consume.mson",
         "https://raw.githubusercontent.com/username/service_1/master/contracts/publish.mson",
@@ -85,7 +93,7 @@ YAML
         "https://raw.githubusercontent.com/username/service_2/production/contracts/consume.mson",
       ]
       urls.each do |url|
-        expect(HTTParty).to receive(:get).with(url).and_return("Some MSON")
+        expect(OldMaid::LocalOrRemoteFile).to receive(:http_get).with(url, false).and_return("# Data structures")
       end
 
       old_maid.update_contracts

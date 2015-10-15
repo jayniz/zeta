@@ -2,12 +2,15 @@ require 'spec_helper'
 
 describe OldMaid do
   let(:config_file){ File.expand_path(File.join(__FILE__, '..', 'support', 'config.yml')) }
+  let(:old_maid){ OldMaid.new(config_file: config_file, env: :with_inline_services) }
 
   context "defaults" do
+
     it "config_file in config/old-maid.yml" do
       default = File.join(Dir.pwd, 'config', 'old-maid.yml')
       expect{
-        OldMaid.new(env: :master)
+        m = OldMaid.new(env: :master)
+        m.update_contracts
       }.to raise_error "No such file or directory - #{default}"
     end
 
@@ -24,8 +27,6 @@ describe OldMaid do
   end
 
   context "list of services defined inline in yaml" do
-    let(:old_maid){ OldMaid.new(config_file: config_file, env: :with_inline_services) }
-
     it 'has a version number' do
       expect(OldMaid::VERSION).not_to be nil
     end
@@ -46,12 +47,6 @@ describe OldMaid do
       end
 
       old_maid.update_contracts
-    end
-
-    context 'validating the contracts' do
-      it "TODO" do
-        old_maid.validate_contracts
-      end
     end
   end
 
@@ -95,11 +90,12 @@ YAML
 
       old_maid.update_contracts
     end
+  end
 
-    context 'validating the contracts' do
-      it "TODO" do
-        old_maid.validate_contracts
-      end
+  context 'validating the contracts' do
+    it "TODO" do
+      expect(old_maid.contracts_fulfilled?).to be true
     end
+
   end
 end

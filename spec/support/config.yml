@@ -1,6 +1,7 @@
 common: &common
   service_name: test_service
-  contracts_path: contracts
+  contracts_path: spec/support/contracts/valid
+  contracts_cache_path: spec/support/contracts/valid/cache
 
 with_inline_services:
   <<: *common
@@ -27,3 +28,18 @@ with_remote_services_list:
 rails_env:
   <<: *common
 
+with_broken_contracts: &common
+  service_name: test_service
+  contracts_path: spec/support/contracts/invalid
+  contracts_cache_path: spec/support/contracts/invalid/cache
+  services:
+    service_1:
+      github:
+        repo: username/service_1
+        branch: master
+        path: contracts
+    service_2:
+      github:
+        repo: username/service_2
+        branch: production
+        path: contracts

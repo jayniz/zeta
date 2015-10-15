@@ -9,7 +9,8 @@ require 'old-maid/local_or_remote_file'
 class OldMaid
   attr_reader :config, :dir
 
-  def initialize(config_file, env)
+  def initialize(params)
+    @params = params
     full_config = YAML.load_file(config_file).with_indifferent_access
     validate_config(full_config[env])
     init_contracts_dir
@@ -21,12 +22,24 @@ class OldMaid
   end
 
   def validate_contracts
+    # TODO
   ensure
     remove_temp_dir
   end
 
   def remove_temp_dir
     FileUtils.remove_entry_secure(@dir)
+  end
+
+  def config_file
+    return File.expand_path(@params[:config_file]) if @params[:config_file]
+    File.join(Dir.pwd, 'config', 'old-maid.yml')
+  end
+
+  def env
+    return @params[:env].to_sym if @params[:env]
+    return unless Object.const_defined?('Rails')
+    Rails.env.to_sym
   end
 
   private
@@ -73,7 +86,13 @@ class OldMaid
     if @config[:services]
       return @config[:services]
     elsif @config[:services_file]
-      YAML.load(LocalOrRemoteFile.new(@config[:services_file]).read).with_indifferent_access
+      file = LocalOrRemoteFile.new(@config[:services_file])
+      services = YAML.load(file.read)
+      begin
+        services.with_indifferent_access
+      rescue
+        raise "Could not load services from #{services.to_json}"
+      end
     end
   end
 

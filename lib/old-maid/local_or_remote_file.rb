@@ -25,7 +25,14 @@ class OldMaid::LocalOrRemoteFile
   end
 
   def read_from_github
-    HTTParty.get github_url
+    http_get github_url
+  end
+
+  def http_get(url)
+    HTTParty.get url
+  rescue
+    puts url
+    raise
   end
 
   def github_url

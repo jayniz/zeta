@@ -24,5 +24,6 @@ with_remote_services_list:
       repo: username/repo
       branch: master
 
-production:
+rails_env:
   <<: *common
+

@@ -16,19 +16,29 @@ class OldMaid
     end
 
     def update_contracts
+      i = infrastructure
       @mutex.synchronize do
         puts "Updating #{cache_dir}" if debug
         update_other_contracts
         update_own_contracts
+        i.convert_all!
       end
       true
     end
 
+    def errors
+      infrastructure.errors
+    end
+
     def contracts_fulfilled?
+      infrastructure.contracts_fulfilled?
+    end
+
+    def infrastructure
       @mutex.synchronize do
-        i = MinimumTerm::Infrastructure.new(cache_dir)
-        i.convert_all!
-        i.contracts_fulfilled?
+        return @infrastructure if @infrastructure
+        @infrastructure = MinimumTerm::Infrastructure.new(cache_dir)
+        @infrastructure
       end
     end
 
@@ -65,11 +75,11 @@ class OldMaid
         @config = env_config
     end
 
+    private
+
     def debug
       !ENV['TEST']
     end
-
-    private
 
     def fetch_service_contracts(service_name, config)
       target_dir = File.join(cache_dir, service_name)
@@ -88,7 +98,7 @@ class OldMaid
     end
 
     def contract_looks_valid?(contract)
-      contract.downcase.start_with?("# data structures")
+      true # TODO
     end
 
     def update_other_contracts

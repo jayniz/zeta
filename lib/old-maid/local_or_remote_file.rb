@@ -33,7 +33,7 @@ class OldMaid::LocalOrRemoteFile
     result = HTTParty.get url
     raise "Not found" if result.code == 404
     print "OK\n" if debug
-    result
+    result.to_s
   rescue
     print "ERROR\n" if debug
     raise

@@ -3,8 +3,7 @@
 # Old Maid
 
 ```
-tl;dr:
-
+TLDR:
 - each service defines which objects it publishes or consumes
 - these contracts are formatted in human readable markdown
 - you never have to know/care about other services or repositories
@@ -29,7 +28,9 @@ Let's imagine an imaginary chat app that is split up into three independent serv
 
 Each time a message is sent, MessageService publishes the full message to the message broker. While the SearchService is likely interested in the full message with all of its properties to index it probably, the NotificationService might just care about the sender and the receiver of the message, discarding all other properties.
 
-An intern is asked to implement a feature that allows one message to be sent to multiple people at the same time. They go ahead and just change the numerical `recepient_id` property of a message to an `recipient_ids` array. They run their tests and all looks good. But **THE INTERN JUST BROKE THE NOTIFICATION SERVICE** because it depends on the `recipient_id` property. 😱
+An intern is asked to implement a feature that allows one message to be sent to multiple people at the same time. They go ahead and just change the numerical `recepient_id` property of a message to an `recipient_ids` array. They run their tests and all looks good.
+
+😱But **THE INTERN JUST BROKE THE NOTIFICATION SERVICE** because it depends on the `recipient_id` property 😱
 
 Wouldn't it be nice of some test local to the **MessageService** repository to tell the poorintern that removing the `recipient_id` property breaks the expectations other services have of the *MessageService* BEFORE they deploy?
 
@@ -43,7 +44,7 @@ Each project have to contain two files in order for *Old Maid* to do its job:
 
 These are simple markdown files in the wonderful [MSON](https://github.com/apiaryio/mson) format. Let's look at the contracts dir of **MessageService**, shall we?
 
-```bash
+```shell
 /home/dev/message-service$ cat contracts/publish.mson
 # Data Structures
 This file defines what MessageService may publish.
@@ -60,7 +61,7 @@ This file defines what MessageService may publish.
 
 So far so good. This way *MessageService* can tell the world what exactly it means when a `Message` object is published. Much the same, the *NotificationService* could define which properties of a `Message` object from the `MessageService` it is actually interested in:
 
-```bash
+```shell
 /home/dev/notification-service$ cat contracts/consume.mson
 # Data Structures
 We just consume one object type, and it comes from the MessageService. Check it out!
@@ -78,7 +79,7 @@ As you can see, it expects the `recipient_id` property to be present.
 ### 1. Installation
 First, add *Old Maid* to your `Gemfile` or install manually:
 
-```bash
+```shell
 $ gem install old-maid
 ```
 
@@ -127,8 +128,9 @@ production:
 
 ```
 
-You typically just create this file once and then don't touch it anymore. Here's how `github.com/jensmander/old-maid-config/infrastructure/master.yml` might look:
+You typically just create the above file once and then don't touch it anymore.
 
+Here's how `github.com/jensmander/old-maid-config/infrastructure/master.yml` might look in our example above:
 
 ```yaml
 MessageService:
@@ -146,4 +148,33 @@ NotificationService:
     repo: 'jensmander/notifications'
     branch: 'master'
     path: 'contracts'
+```
+
+Whenever you add a service to the infrastructure, you just add it to this central file and all existing services will automatically know about your new service.
+
+
+### 3. Usage
+
+You can tell *Old Maid* to fetch the current version of all contracts like this:
+
+```shell
+$ RAILS_ENV=development rake old_maid:fetch_contracts
+```
+
+or without Rake
+
+```shell
+$ old_maid -e development -c config/old-maid.yml fetch_contracts
+```
+
+This command will populate the `contracts/.cache` directory with the current version of all contracts and then copy over your local changes to your contract. You can then validate your infrastructure like this:
+
+```shell
+$ RAILS_ENV=development rake old_maid:validate_contracts
+```
+
+or without Rake
+
+```shell
+$ old_maid -e development -c config/old-maid.yml validate_contracts
 ```

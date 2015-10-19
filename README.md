@@ -7,10 +7,11 @@ tl;dr:
 
 - each service defines which objects it publishes or consumes
 - these contracts are formatted in human readable markdown
-- Old Maid knows the rest of your infrastructure and fetches the
-  contracts of all other services
 - you never have to know/care about other services or repositories
-- Old Maid will alert you if your change in service X breaks service Y
+
+Old Maid will:
+- know the rest of your infrastructure and fetches the contracts of all other services
+- alert you if your change in service X breaks service Y
 ```
 
 In an infrastructure where many services are talking with each other, it's sometimes hard to know **how changes in one service affect other services**, as each project often just knows about itself. Even if local tests pass, you can't know what other services might be affected when you make changes to a service.

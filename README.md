@@ -44,6 +44,7 @@ Each project have to contain two files in order for *Old Maid* to do its job:
 
 These are simple markdown files in the wonderful [MSON](https://github.com/apiaryio/mson) format. Let's look at the contracts dir of **MessageService**, shall we?
 
+### A publish specification:
 ```shell
 /home/dev/message-service$ cat contracts/publish.mson
 # Data Structures
@@ -55,12 +56,11 @@ This file defines what MessageService may publish.
 - recipients: (Array[number], required)
 - text: (string, required)
 - emoji: (string)
-
-/home/dev/MessageService$
 ```
 
 So far so good. This way *MessageService* can tell the world what exactly it means when a `Message` object is published. Much the same, the *NotificationService* could define which properties of a `Message` object from the `MessageService` it is actually interested in:
 
+### A consume specification:
 ```shell
 /home/dev/notification-service$ cat contracts/consume.mson
 # Data Structures
@@ -71,8 +71,14 @@ We just consume one object type, and it comes from the MessageService. Check it 
 - recipient_id: (number, required)
 ```
 
-As you can see, it expects the `recipient_id` property to be present.
+As you can see, this consumer expects the `recipient_id` property to be present when a `Message` object is received from `MessageService`. While a publish specification just defines objects, a consume specification prefixes the names of objects it consumes with the name of the service publishing the object. As in our example above:
 
+```
+# MessageService:Message
+     |              `---------- object name
+     `------------------------- service name
+
+```
 
 ## Getting started
 
@@ -81,6 +87,12 @@ First, add *Old Maid* to your `Gemfile` or install manually:
 
 ```shell
 $ gem install old-maid
+```
+
+*Old Maid* uses [drafter](https://github.com/apiaryio/drafter) to convert mson files to JSON Schema, so you need to install that as well. On OSX, you can install drafter ~>1.0 via homebrew:
+
+```shell
+$ brew install --HEAD  https://raw.github.com/apiaryio/drafter/master/tools/homebrew/drafter.rb
 ```
 
 ### 2. Configuration
@@ -128,7 +140,7 @@ production:
 
 ```
 
-You typically just create the above file once and then don't touch it anymore.
+You typically just create the above file once and then don't touch it anymore. If that file is in a private repository (that would be a good idea), make sure you `export GITHUB_USERNAME=youruser` and `GITHUB_TOKEN=yourtoken` and *Old Maid* will use that.
 
 Here's how `github.com/jensmander/old-maid-config/infrastructure/master.yml` might look in our example above:
 
@@ -155,26 +167,47 @@ Whenever you add a service to the infrastructure, you just add it to this centra
 
 ### 3. Usage
 
-You can tell *Old Maid* to fetch the current version of all contracts like this:
-
 ```shell
-$ RAILS_ENV=development rake old_maid:fetch_contracts
+Usage: old-maid [options] full_check|fetch_remote_contracts|update_own_contracts|validate
+
+Specific options:
+    -c, --config=CONFIG_FILE         Config file (default: config/old-maid.yml)
+    -e, --env=ENVIRONMENT            Environment (default: RAILS_ENV, if it is set)
+    -s, --silent                     No output, just an appropriate return code
+
+Common options:
+    -h, --help                       Show this message
+    -v, --version                    Show version
 ```
 
-or without Rake
+Example time. You can tell *Old Maid* to validate the whole infrastructure like this:
 
 ```shell
-$ old_maid -e development -c config/old-maid.yml fetch_contracts
+$ old-maid -e development full_check
+```
+
+The above command performs the following three steps:
+
+1. Fetch all contracts from remote repositories and put them into the cache directory configured above
+2. Copy the current projects contracts (that you might have changed) into the cache directory
+3. Validate all contracts (i.e. make sure that every publishing service satisfies its consumers)
+
+The above commands can also be run in isolation:
+
+```shell
+$ old-maid -e development fetch_contracts
 ```
 
 This command will populate the `contracts/.cache` directory with the current version of all contracts and then copy over your local changes to your contract. You can then validate your infrastructure like this:
 
 ```shell
-$ RAILS_ENV=development rake old_maid:validate_contracts
+$ old-maid -e development validate
 ```
 
-or without Rake
+If you just made changes to your local contracts, you can copy them over to the cache and validate your infrastructure like this:
 
 ```shell
-$ old_maid -e development -c config/old-maid.yml validate_contracts
+$ old-maid -e development update_own_contracts validate
 ```
+
+Otherwise it will exit with an error and display any contract violations in JSON.

@@ -1,56 +1,58 @@
+require 'colorize'
 require 'httparty'
 require 'open-uri'
 
 require 'pry'
 
 class OldMaid::LocalOrRemoteFile
-  def initialize(params)
-    @params = params
+  def initialize(options)
+    @options = options
   end
 
   def read
-    if @params[:path]
+    if @options[:path]
       read_local
-    elsif @params[:github]
+    elsif @options[:github]
       read_from_github
     else
-      raise "Unknown file location #{@params}"
+      raise "Unknown file location #{@options}"
     end
   end
 
   private
 
   def read_local
-    open(File.join(@params[:path], @params[:file])).read
+    open(File.join(@options[:path], @options[:file])).read
   end
 
   def read_from_github
-    self.class.http_get(github_url, debug)
+    self.class.http_get(github_url, verbose?)
   end
 
-  def self.http_get(url, debug)
-    print "GET #{url}... " if debug
+  def self.http_get(url, verbose)
+    masked_url = ENV['GITHUB_TOKEN'].blank? ? url : url.sub(ENV['GITHUB_TOKEN'], '***')
+    print "GET #{masked_url}... " if verbose
     result = HTTParty.get url
-    raise "Not found" if result.code == 404
-    print "OK\n" if debug
+    raise "Error #{result.code}" unless result.code == 200
+    print "OK\n".green if verbose
     result.to_s
   rescue
-    print "ERROR\n" if debug
+    print "ERROR\n".blue if verbose
     raise
   end
 
-  def debug
-    !!@params[:debug]
+  def verbose?
+    !!@options[:verbose]
   end
 
   def github_url
-    repo   = @params[:github][:repo]
-    branch = @params[:github][:branch]
-    path   = @params[:github][:path]
-    file   = @params[:file]
+    repo   = @options[:github][:repo]
+    branch = @options[:github][:branch]
+    path   = @options[:github][:path]
+    file   = @options[:file]
 
     uri = [branch, path, file].compact.join('/')
-    if u = ENV['GITHUB_USER'] && t = ENV['GITHUB_TOKEN']
+    if u = ENV['GITHUB_USER'] and t = ENV['GITHUB_TOKEN']
       "https://#{u}:#{t}@raw.githubusercontent.com/#{repo}/#{uri}"
     else
       "https://raw.githubusercontent.com/#{repo}/#{uri}"

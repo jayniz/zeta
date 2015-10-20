@@ -10,20 +10,31 @@ class OldMaid
   module Instance
     attr_reader :config
 
-    def initialize(params = {})
+    def initialize(options = {})
       @mutex = Mutex.new
-      @params = params
+      @options = options
+      puts "Using config file #{config_file}" if verbose?
     end
 
     def update_contracts
       i = infrastructure
       @mutex.synchronize do
-        puts "Updating #{cache_dir}" if debug
+        puts "Updating #{cache_dir}" if verbose?
         update_other_contracts
         update_own_contracts
         i.convert_all!
       end
       true
+    end
+
+    def update_own_contracts
+      contract_files.each do |file|
+        source_file = File.join(config[:contracts_path], file)
+        target_file = File.join(cache_dir, config[:service_name], file)
+        puts "cp #{source_file} #{target_file}" if verbose?
+        FileUtils.rm_f(target_file)
+        FileUtils.cp(source_file, target_file) if File.exists?(source_file)
+      end
     end
 
     def errors
@@ -37,20 +48,25 @@ class OldMaid
     def infrastructure
       @mutex.synchronize do
         return @infrastructure if @infrastructure
-        @infrastructure = MinimumTerm::Infrastructure.new(cache_dir)
+        @infrastructure = MinimumTerm::Infrastructure.new(data_dir: cache_dir, verbose: verbose?)
         @infrastructure
       end
     end
 
     def config_file
-      return File.expand_path(@params[:config_file]) if @params[:config_file]
+      return File.expand_path(@options[:config_file]) if @options[:config_file]
       File.join(Dir.pwd, 'config', 'old-maid.yml')
     end
 
     def env
-      return @params[:env].to_sym if @params[:env]
-      return unless Object.const_defined?('Rails')
-      Rails.env.to_sym
+      return @options[:env].to_sym if @options[:env]
+      if Object.const_defined?('Rails')
+        Rails.env.to_sym
+      else
+        guessed = ENV['RAILS_ENV'] || ENV['RACK_ENV']
+        raise "No environment given" unless guessed
+        guessed
+      end
     end
 
     def cache_dir
@@ -65,7 +81,7 @@ class OldMaid
         full_config = YAML.load_file(config_file).with_indifferent_access
         env_config  = full_config[env]
 
-        raise "No config for environment #{env} found" unless env_config
+        raise "No config for environment '#{env}' found in #{config_file}" unless env_config
 
         # TODO validate it properly
         [:service_name, :contracts_path, :contracts_cache_path].each do |k|
@@ -77,8 +93,8 @@ class OldMaid
 
     private
 
-    def debug
-      !ENV['TEST']
+    def verbose?
+      @options[:verbose]
     end
 
     def fetch_service_contracts(service_name, config)
@@ -90,7 +106,7 @@ class OldMaid
         FileUtils.rm_f(file)
 
         File.open(file, 'w') do |out|
-          contract = LocalOrRemoteFile.new(config.merge(file: contract, debug: debug)).read
+          contract = LocalOrRemoteFile.new(config.merge(file: contract, verbose: verbose?)).read
           raise "Invalid contract:\n\n#{contract}\n#{'~'*80}" unless contract_looks_valid?(contract)
           out.puts contract
         end
@@ -107,16 +123,6 @@ class OldMaid
       end
     end
 
-    def update_own_contracts
-      contract_files.each do |file|
-        source_file = File.join(@config[:contracts_path], file)
-        target_file = File.join(cache_dir, @config[:service_name], file)
-        puts "cp #{source_file} #{target_file}" if debug
-        FileUtils.rm_f(target_file)
-        FileUtils.cp(source_file, target_file) if File.exists?(source_file)
-      end
-    end
-
     def contract_files
       ['publish.mson', 'consume.mson']
     end
@@ -125,7 +131,7 @@ class OldMaid
       if config[:services]
         return config[:services]
       elsif config[:services_file]
-        file = LocalOrRemoteFile.new(config[:services_file].merge(debug: debug))
+        file = LocalOrRemoteFile.new(config[:services_file].merge(debug: verbose?))
         services = YAML.load(file.read)
         begin
           services.with_indifferent_access

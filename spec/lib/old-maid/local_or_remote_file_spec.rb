@@ -5,7 +5,9 @@ describe OldMaid::LocalOrRemoteFile do
   it "refuses to open a file it doesn't know how to locate" do
     expect{
       OldMaid::LocalOrRemoteFile.new({}).read
-    }.to raise_error
+    }.to raise_error{ |e|
+      expect(e.to_s.include?("Unknown file location")).to be true
+    }
   end
 
   it "loads a local file" do
@@ -54,7 +56,9 @@ describe OldMaid::LocalOrRemoteFile do
 
       expect {
         OldMaid::LocalOrRemoteFile.new(o).read
-      }.to raise_error
+      }.to raise_error{ |e|
+        expect(e.to_s.end_with?("Error 404")).to be true
+      }
     end
   end
 end

@@ -28,7 +28,7 @@ with_remote_services_list:
 rails_env:
   <<: *common
 
-with_broken_contracts: &common
+with_broken_contracts:
   service_name: test_service
   contracts_path: spec/support/contracts/invalid
   contracts_cache_path: spec/support/contracts/invalid/cache
@@ -43,3 +43,12 @@ with_broken_contracts: &common
         repo: username/service_2
         branch: production
         path: contracts
+
+missing_services:
+  <<: *common
+  services_file:
+    file: 'missing.yml'
+    github:
+      repo: username/repo
+      branch: master
+

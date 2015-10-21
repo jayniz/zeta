@@ -3,3 +3,6 @@ require 'bundler'
 Bundler.require
 require 'webmock/rspec'
 require 'old-maid'
+
+require 'coveralls'
+Coveralls.wear!

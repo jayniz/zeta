@@ -1,6 +1,6 @@
 ![](https://dl.dropboxusercontent.com/u/1953503/old-maid.jpg)
 
-[![Circle CI](https://circleci.com/gh/moviepilot/old-maid.svg?style=svg)](https://circleci.com/gh/moviepilot/old-maid) [![Coverage Status](https://coveralls.io/repos/moviepilot/old-maid/badge.svg?branch=master&service=github)](https://coveralls.io/github/moviepilot/old-maid?branch=master)
+[![Circle CI](https://circleci.com/gh/moviepilot/old-maid.svg?style=svg)](https://circleci.com/gh/moviepilot/old-maid) [![Coverage Status](https://coveralls.io/repos/moviepilot/old-maid/badge.svg?branch=master&service=github)](https://coveralls.io/github/moviepilot/old-maid?branch=master) [![Code Climate](https://codeclimate.com/github/moviepilot/old-maid/badges/gpa.svg)](https://codeclimate.com/github/moviepilot/old-maid)
 # Old Maid
 
 ```

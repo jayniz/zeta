@@ -90,12 +90,6 @@ First, add *Old Maid* to your `Gemfile` or install manually:
 $ gem install old-maid
 ```
 
-*Old Maid* uses [drafter](https://github.com/apiaryio/drafter) to convert mson files to JSON Schema, so you need to install that as well. On OSX, you can install drafter ~>1.0 via homebrew:
-
-```shell
-$ brew install --HEAD  https://raw.github.com/apiaryio/drafter/master/tools/homebrew/drafter.rb
-```
-
 ### 2. Configuration
 
 If you're using ruby on rails, *Old Maid* will automatically know your

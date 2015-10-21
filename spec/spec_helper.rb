@@ -1,8 +1,12 @@
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 require 'bundler'
-Bundler.require
 require 'webmock/rspec'
-require 'old-maid'
-
+require 'simplecov'
 require 'coveralls'
-Coveralls.wear!
+SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
+  SimpleCov::Formatter::HTMLFormatter,
+  Coveralls::SimpleCov::Formatter
+]
+SimpleCov.start
+
+require 'old-maid'

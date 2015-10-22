@@ -1,4 +1,0 @@
-- invalid primitives
-- 404 should report url
-- default primitive is object
-- 

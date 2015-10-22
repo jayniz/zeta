@@ -135,7 +135,7 @@ production:
 
 ```
 
-You typically just create the above file once and then don't touch it anymore. If that file is in a private repository (that would be a good idea), make sure you `export GITHUB_USERNAME=youruser` and `GITHUB_TOKEN=yourtoken` and *Zeta* will use that.
+You typically just create the above file once and then don't touch it anymore. If that file is in a private repository (that would be a good idea), make sure you `export GITHUB_USER=youruser` and `GITHUB_TOKEN=yourtoken` and *Zeta* will use that.
 
 Here's how `github.com/jensmander/zeta-config/infrastructure/master.yml` might look in our example above:
 

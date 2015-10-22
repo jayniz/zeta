@@ -1,10 +1,10 @@
 require 'spec_helper'
 require 'fileutils'
 
-describe OldMaid::LocalOrRemoteFile do
+describe Zeta::LocalOrRemoteFile do
   it "refuses to open a file it doesn't know how to locate" do
     expect{
-      OldMaid::LocalOrRemoteFile.new({}).read
+      Zeta::LocalOrRemoteFile.new({}).read
     }.to raise_error{ |e|
       expect(e.to_s.include?("Unknown file location")).to be true
     }
@@ -20,7 +20,7 @@ describe OldMaid::LocalOrRemoteFile do
         file: 'test.mson',
         path: dir
       }
-      expect(OldMaid::LocalOrRemoteFile.new(o).read).to eq timestamp.to_s
+      expect(Zeta::LocalOrRemoteFile.new(o).read).to eq timestamp.to_s
     ensure
       FileUtils.remove_entry dir
     end
@@ -35,7 +35,7 @@ describe OldMaid::LocalOrRemoteFile do
 
     it "without auth tokens" do
       expect(HTTParty).to receive(:get).with("https://raw.githubusercontent.com/repo/path/foo.txt").and_return(get_double)
-      OldMaid::LocalOrRemoteFile.new(o).read
+      Zeta::LocalOrRemoteFile.new(o).read
     end
 
     it "with auth tokens" do
@@ -43,7 +43,7 @@ describe OldMaid::LocalOrRemoteFile do
       ENV['GITHUB_TOKEN'] = 'token'
       begin
         expect(HTTParty).to receive(:get).with("https://user:token@raw.githubusercontent.com/repo/path/foo.txt").and_return(get_double)
-        OldMaid::LocalOrRemoteFile.new(o).read
+        Zeta::LocalOrRemoteFile.new(o).read
       ensure
         ENV['GITHUB_USER'] = nil
         ENV['GITHUB_TOKEN'] = nil
@@ -55,7 +55,7 @@ describe OldMaid::LocalOrRemoteFile do
       expect(HTTParty).to receive(:get).with("https://raw.githubusercontent.com/repo/path/foo.txt").and_return(not_found)
 
       expect {
-        OldMaid::LocalOrRemoteFile.new(o).read
+        Zeta::LocalOrRemoteFile.new(o).read
       }.to raise_error{ |e|
         expect(e.to_s.end_with?("Error 404")).to be true
       }

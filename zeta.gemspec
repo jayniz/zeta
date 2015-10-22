@@ -1,17 +1,17 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'old-maid/version'
+require 'zeta/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'old-maid'
-  spec.version       = OldMaid::VERSION
+  spec.name          = 'zeta'
+  spec.version       = Zeta::VERSION
   spec.authors       = ['Jannis Hermanns']
   spec.email         = ['jannis@gmail.com']
 
   spec.summary       = 'Collects and validates the publish/consume contracts of your infrastructure'
   spec.description   = 'Vlad'
-  spec.homepage      = 'https://github.com/moviepilot/old-maid'
+  spec.homepage      = 'https://github.com/moviepilot/zeta'
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.bindir        = 'bin'

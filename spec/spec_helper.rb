@@ -9,4 +9,4 @@ SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
 ]
 SimpleCov.start{ add_filter 'spec/'}
 
-require 'old-maid'
+require 'zeta'

@@ -4,7 +4,7 @@ require 'open-uri'
 
 require 'pry'
 
-class OldMaid::LocalOrRemoteFile
+class Zeta::LocalOrRemoteFile
   def initialize(options)
     @options = options
   end

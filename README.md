@@ -1,6 +1,7 @@
-![](https://dl.dropboxusercontent.com/u/1953503/old-maid.jpg)
+[![Circle CI](https://circleci.com/gh/moviepilot/zeta.svg?style=svg)](https://circleci.com/gh/moviepilot/zeta) [![Coverage Status](https://coveralls.io/repos/moviepilot/zeta/badge.svg?branch=master&service=github)](https://coveralls.io/github/moviepilot/zeta?branch=master) [![Code Climate](https://codeclimate.com/github/moviepilot/zeta/badges/gpa.svg)](https://codeclimate.com/github/moviepilot/zeta)
 
-[![Circle CI](https://circleci.com/gh/moviepilot/old-maid.svg?style=svg)](https://circleci.com/gh/moviepilot/old-maid) [![Coverage Status](https://coveralls.io/repos/moviepilot/old-maid/badge.svg?branch=master&service=github)](https://coveralls.io/github/moviepilot/old-maid?branch=master) [![Code Climate](https://codeclimate.com/github/moviepilot/old-maid/badges/gpa.svg)](https://codeclimate.com/github/moviepilot/old-maid)
+![](https://dl.dropboxusercontent.com/u/1953503/zeta.jpg)
+
 # Old Maid
 
 ```
@@ -87,13 +88,13 @@ As you can see, this consumer expects the `recipient_id` property to be present 
 First, add *Old Maid* to your `Gemfile` or install manually:
 
 ```shell
-$ gem install old-maid
+$ gem install zeta
 ```
 
 ### 2. Configuration
 
 If you're using ruby on rails, *Old Maid* will automatically know your
-environment and look for its configuration in `config/old-maid.yml`, which could look like this:
+environment and look for its configuration in `config/zeta.yml`, which could look like this:
 
 ```yaml
 common: &common
@@ -122,9 +123,9 @@ development:
 
     # You can either host the file yourself via HTTP, but it's quite convenient
     # to have it version controlled and hosted by a service like github. We'll
-    # call this repo old-maid-config for this example:
+    # call this repo zeta-config for this example:
     github:
-      repo: jensmander/old-maid-config
+      repo: jensmander/zeta-config
       branch: master
       path: infrastructure
 
@@ -137,7 +138,7 @@ production:
 
 You typically just create the above file once and then don't touch it anymore. If that file is in a private repository (that would be a good idea), make sure you `export GITHUB_USERNAME=youruser` and `GITHUB_TOKEN=yourtoken` and *Old Maid* will use that.
 
-Here's how `github.com/jensmander/old-maid-config/infrastructure/master.yml` might look in our example above:
+Here's how `github.com/jensmander/zeta-config/infrastructure/master.yml` might look in our example above:
 
 ```yaml
 MessageService:
@@ -163,10 +164,10 @@ Whenever you add a service to the infrastructure, you just add it to this centra
 ### 3. Usage
 
 ```shell
-Usage: old-maid [options] full_check|fetch_remote_contracts|update_own_contracts|validate
+Usage: zeta [options] full_check|fetch_remote_contracts|update_own_contracts|validate
 
 Specific options:
-    -c, --config=CONFIG_FILE         Config file (default: config/old-maid.yml)
+    -c, --config=CONFIG_FILE         Config file (default: config/zeta.yml)
     -e, --env=ENVIRONMENT            Environment (default: RAILS_ENV, if it is set)
     -s, --silent                     No output, just an appropriate return code
 
@@ -178,7 +179,7 @@ Common options:
 Example time. You can tell *Old Maid* to validate the whole infrastructure like this:
 
 ```shell
-$ old-maid -e development full_check
+$ zeta -e development full_check
 ```
 
 The above command performs the following three steps:
@@ -190,19 +191,19 @@ The above command performs the following three steps:
 The above commands can also be run in isolation:
 
 ```shell
-$ old-maid -e development fetch_contracts
+$ zeta -e development fetch_contracts
 ```
 
 This command will populate the `contracts/.cache` directory with the current version of all contracts and then copy over your local changes to your contract. You can then validate your infrastructure like this:
 
 ```shell
-$ old-maid -e development validate
+$ zeta -e development validate
 ```
 
 If you just made changes to your local contracts, you can copy them over to the cache and validate your infrastructure like this:
 
 ```shell
-$ old-maid -e development update_own_contracts validate
+$ zeta -e development update_own_contracts validate
 ```
 
 Otherwise it will exit with an error and display any contract violations in JSON.

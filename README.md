@@ -1,6 +1,7 @@
+# Zeta [![Circle CI](https://circleci.com/gh/moviepilot/zeta.svg?style=svg)](https://circleci.com/gh/moviepilot/zeta) [![Coverage Status](https://coveralls.io/repos/moviepilot/zeta/badge.svg?branch=master&service=github)](https://coveralls.io/github/moviepilot/zeta?branch=master) [![Code Climate](https://codeclimate.com/github/moviepilot/zeta/badges/gpa.svg)](https://codeclimate.com/github/moviepilot/zeta)
+
 ![](https://dl.dropboxusercontent.com/u/1953503/zeta.jpg)
 
-# Zeta [![Circle CI](https://circleci.com/gh/moviepilot/zeta.svg?style=svg)](https://circleci.com/gh/moviepilot/zeta) [![Coverage Status](https://coveralls.io/repos/moviepilot/zeta/badge.svg?branch=master&service=github)](https://coveralls.io/github/moviepilot/zeta?branch=master) [![Code Climate](https://codeclimate.com/github/moviepilot/zeta/badges/gpa.svg)](https://codeclimate.com/github/moviepilot/zeta)
 
 ```
 TLDR:

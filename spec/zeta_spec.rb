@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe OldMaid do
+describe Zeta do
   let(:config_file){ File.expand_path(File.join(__FILE__, '..', 'support', 'config.yml')) }
-  let(:old_maid){ OldMaid.new(config_file: config_file, env: :with_inline_services) }
+  let(:zeta){ Zeta.new(config_file: config_file, env: :with_inline_services) }
 
   after(:all) do
     # Clean up
@@ -11,25 +11,25 @@ describe OldMaid do
   end
 
   it 'has a version number' do
-    expect(OldMaid::VERSION).not_to be nil
+    expect(Zeta::VERSION).not_to be nil
   end
 
   context "singleton" do
     it "creates a singleton with a default config on demand" do
-      maid = OldMaid.new
-      expect(OldMaid).to receive(:new).and_return(maid)
-      expect(maid).to receive(:errors).and_return([])
+      zeta = Zeta.new
+      expect(Zeta).to receive(:new).and_return(zeta)
+      expect(zeta).to receive(:errors).and_return([])
 
-      expect(OldMaid.errors).to eq []
+      expect(Zeta.errors).to eq []
     end
   end
 
   context "defaults" do
 
-    it "config_file in config/old-maid.yml" do
-      default = File.join(Dir.pwd, 'config', 'old-maid.yml')
+    it "config_file in config/zeta.yml" do
+      default = File.join(Dir.pwd, 'config', 'zeta.yml')
       expect{
-        m = OldMaid.new(env: :master)
+        m = Zeta.new(env: :master)
         m.update_contracts
       }.to raise_error do |error|
         expect(error.message.include?(default)).to be true
@@ -45,7 +45,7 @@ describe OldMaid do
               :rails_env
             end
           end
-          m = OldMaid.new(config_file: config_file)
+          m = Zeta.new(config_file: config_file)
           expect(m.env).to eq :rails_env
         ensure
           Object.send(:remove_const, :Rails)
@@ -55,7 +55,7 @@ describe OldMaid do
       it "RAILS_ENV environment variable" do
         ENV['RAILS_ENV'] = 'FOO'
         begin
-          m = OldMaid.new(config_file: config_file)
+          m = Zeta.new(config_file: config_file)
           expect(m.env).to eq 'FOO'
         rescue
           ENV['RAILS_ENV'] = nil
@@ -65,7 +65,7 @@ describe OldMaid do
       it "RACK_ENV environment variable" do
         ENV['RACK_ENV'] = 'FOO'
         begin
-          m = OldMaid.new(config_file: config_file)
+          m = Zeta.new(config_file: config_file)
           expect(m.env).to eq 'FOO'
         rescue
           ENV['RACK_ENV'] = nil
@@ -76,7 +76,7 @@ describe OldMaid do
 
   context "delegating to infrastructure" do
     it "delegates :errors to its infrastructure" do
-      m = OldMaid.new(env: :with_remote_services_list, config_file: config_file)
+      m = Zeta.new(env: :with_remote_services_list, config_file: config_file)
       expect(m.infrastructure).to receive(:errors).and_return [:foo]
       expect(m.errors).to eq [:foo]
     end
@@ -91,9 +91,9 @@ describe OldMaid do
       o = {config_file: config_file, env: :missing_services}
       expect(HTTParty).to receive(:get).with(url).and_return(get_double)
 
-      maid = OldMaid.new(o)
+      zeta = Zeta.new(o)
       expect{
-        maid.send(:services)
+        zeta.send(:services)
       }.to raise_error{ |e|
         expected = "Could not load services from"
         expect(e.to_s.include?(expected)).to be true
@@ -101,7 +101,7 @@ describe OldMaid do
     end
 
     it 'loads a config file' do
-      expect(old_maid.config,).to_not be nil
+      expect(zeta.config,).to_not be nil
     end
 
     it 'updates the contracts' do
@@ -116,12 +116,12 @@ describe OldMaid do
         expect(HTTParty).to receive(:get).with(url).and_return(get_double)
       end
 
-      old_maid.update_contracts
+      zeta.update_contracts
     end
   end
 
   context "list of services defined in a remote file" do
-    let(:old_maid){ OldMaid.new(config_file: config_file, env: :with_remote_services_list) }
+    let(:zeta){ Zeta.new(config_file: config_file, env: :with_remote_services_list) }
     let(:services_url){ "https://raw.githubusercontent.com/username/repo/master/services.yml" }
     let(:remote_services_list){
       <<YAML
@@ -139,15 +139,15 @@ YAML
     }
 
     it 'has a version number' do
-      expect(OldMaid::VERSION).not_to be nil
+      expect(Zeta::VERSION).not_to be nil
     end
 
     it 'loads a config file' do
-      expect(old_maid.config,).to_not be nil
+      expect(zeta.config,).to_not be nil
     end
 
     it 'updates the contracts' do
-      expect(OldMaid::LocalOrRemoteFile).to receive(:http_get).with(services_url, false).and_return(remote_services_list)
+      expect(Zeta::LocalOrRemoteFile).to receive(:http_get).with(services_url, false).and_return(remote_services_list)
       urls = [
         "https://raw.githubusercontent.com/username/service_1/master/contracts/consume.mson",
         "https://raw.githubusercontent.com/username/service_1/master/contracts/publish.mson",
@@ -155,16 +155,16 @@ YAML
         "https://raw.githubusercontent.com/username/service_2/production/contracts/consume.mson",
       ]
       urls.each do |url|
-        expect(OldMaid::LocalOrRemoteFile).to receive(:http_get).with(url, false).and_return("# Data structures")
+        expect(Zeta::LocalOrRemoteFile).to receive(:http_get).with(url, false).and_return("# Data structures")
       end
 
-      old_maid.update_contracts
+      zeta.update_contracts
     end
   end
 
   context 'validating the contracts' do
     it "TODO" do
-      expect(old_maid.contracts_fulfilled?).to be true
+      expect(zeta.contracts_fulfilled?).to be true
     end
 
   end

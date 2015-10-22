@@ -4,9 +4,9 @@ require 'fileutils'
 require 'tmpdir'
 require 'minimum-term'
 
-require 'old-maid/local_or_remote_file'
+require 'zeta/local_or_remote_file'
 
-class OldMaid
+class Zeta
   module Instance
     attr_reader :config
 
@@ -55,7 +55,7 @@ class OldMaid
 
     def config_file
       return File.expand_path(@options[:config_file]) if @options[:config_file]
-      File.join(Dir.pwd, 'config', 'old-maid.yml')
+      File.join(Dir.pwd, 'config', 'zeta.yml')
     end
 
     def env

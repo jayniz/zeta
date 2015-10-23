@@ -131,7 +131,7 @@ class Zeta
       if config[:services]
         return config[:services]
       elsif config[:services_file]
-        file = LocalOrRemoteFile.new(config[:services_file].merge(debug: verbose?))
+        file = LocalOrRemoteFile.new(config[:services_file].merge(verbose: verbose?))
         services = YAML.load(file.read)
         begin
           services.with_indifferent_access

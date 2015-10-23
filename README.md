@@ -14,7 +14,7 @@ Zeta will:
 - alert you if your change in service X breaks service Y
 ```
 
-In an infrastructure where many services are talking with each other, it's sometimes hard to know **how changes in one service affect other services**, as each project often just knows about itself. Even if local tests pass, you can't know what other services might be affected when you make changes to a service.
+In an infrastructure where many services are talking with each other, it's sometimes hard to know **how changes in one service affect other services**, as each service often just knows about itself. Even if local tests pass, you can't know what other services might be affected when you make changes to a service.
 
 *Zeta* tackles this problem by allowing each service to define which objects it consumes, and which objects it publishes - in simple Markdown (specifically [MSON](https://github.com/apiaryio/mson)).It doesn't matter if these objected are transported via a HTTP, a message broker like RabbitMQ or any other mean.
 
@@ -38,7 +38,7 @@ Wouldn't it be nice of some test local to the **MessageService** repository to t
 
 ## Yes, it would!
 
-Each project have to contain two files in order for *Zeta* to do its job:
+Each service has to contain two files in order for *Zeta* to do its job:
 
 1. `contracts/publish.mson`
 2. `contracts/consume.mson`
@@ -104,7 +104,7 @@ common: &common
   # Which directory contains the publish.mson and consume.mson
   contracts_path: contracts
 
-  # Where to cache the contracts from all other projects that are part of the
+  # Where to cache the contracts from all other services that are part of the
   # infrastructure. Zeta will fetch these for you.
   contracts_cache_path: contracts/.cache
 
@@ -184,7 +184,7 @@ $ zeta -e development full_check
 The above command performs the following three steps:
 
 1. Fetch all contracts from remote repositories and put them into the cache directory configured above
-2. Copy the current projects contracts (that you might have changed) into the cache directory
+2. Copy the current services contracts (that you might have changed) into the cache directory
 3. Validate all contracts (i.e. make sure that every publishing service satisfies its consumers)
 
 The above commands can also be run in isolation:

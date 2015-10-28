@@ -82,7 +82,7 @@ class Zeta::Runner
         zeta.contracts_fulfilled?
         unless zeta.errors.empty?
           puts JSON.pretty_generate(zeta.errors)
-          puts "#{zeta.errors.length} invalid contracts".red
+          puts "#{zeta.errors.length} contract violations".red
           exit(-1)
         end
         puts "All contracts valid 🙌".green if options[:verbose]

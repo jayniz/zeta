@@ -2,7 +2,7 @@ require 'active_support/core_ext/hash/indifferent_access'
 require 'yaml'
 require 'fileutils'
 require 'tmpdir'
-require 'minimum-term'
+require 'lacerda'
 
 require 'zeta/local_or_remote_file'
 
@@ -48,7 +48,7 @@ class Zeta
     def infrastructure
       @mutex.synchronize do
         return @infrastructure if @infrastructure
-        @infrastructure = MinimumTerm::Infrastructure.new(data_dir: cache_dir, verbose: verbose?)
+        @infrastructure = Lacerda::Infrastructure.new(data_dir: cache_dir, verbose: verbose?)
         @infrastructure
       end
     end

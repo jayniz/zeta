@@ -19,8 +19,8 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_runtime_dependency 'rake', '~> 10.2'
-  spec.add_runtime_dependency 'minimum-term', '~> 0.2'
-  spec.add_runtime_dependency 'activesupport', '~> 4.2'
+  spec.add_runtime_dependency 'lacerda', '~> 0.3'
+  spec.add_runtime_dependency 'activesupport'
   spec.add_runtime_dependency 'httparty', '~> 0.13'
   spec.add_runtime_dependency 'colorize'
   spec.add_runtime_dependency 'webmock'

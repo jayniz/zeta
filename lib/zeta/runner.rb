@@ -2,12 +2,24 @@
 require 'optparse'
 
 class Zeta::Runner
-  COMMANDS = %w{full_check fetch_remote_contracts update_own_contracts validate}
+  COMMANDS = {
+    'full_check'             => '',
+    'fetch_remote_contracts' => '',
+    'update_own_contracts'   => '',
+    'validate'               => ''
+  }
 
   def self.run
     options = {}
     parser = OptionParser.new do |opts|
-      opts.banner = "Usage: zeta [options] #{COMMANDS.join('|')}"
+      opts.banner = "Usage: zeta [options] command}"
+
+      opts.separator ""
+      opts.separator "Commands:"
+
+      COMMANDS.each do |cmd, desc|
+        opts.on(cmd, desc){}
+      end
 
       opts.separator ""
       opts.separator "Specific options:"
@@ -41,7 +53,7 @@ class Zeta::Runner
     parser.parse!
 
     commands = ARGV
-    if commands.empty? or !(commands-COMMANDS).empty?
+    if commands.empty? or !(commands-COMMANDS.keys).empty?
       puts parser
       exit(-1)
     end

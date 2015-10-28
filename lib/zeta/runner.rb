@@ -3,26 +3,30 @@ require 'optparse'
 
 class Zeta::Runner
   COMMANDS = {
-    'full_check'             => '',
-    'fetch_remote_contracts' => '',
-    'update_own_contracts'   => '',
-    'validate'               => ''
+    'full_check'             => 'Update contracts and validate infrastructure',
+    'validate'               => 'Validate the architecture in the contracts cache dir',
+    'update_own_contracts'   => 'Update your own contracts in the contracts cache dir',
+    'fetch_remote_contracts' => 'Download remote contracts and update your own contracts in the contracts cache dir'
   }
 
   def self.run
     options = {}
     parser = OptionParser.new do |opts|
-      opts.banner = "Usage: zeta [options] command}"
+      opts.banner = "#{'Usage:'.red} zeta [options] command"
 
       opts.separator ""
-      opts.separator "Commands:"
+      opts.separator "Commands:".yellow
 
+      longest_command = COMMANDS.keys.map(&:length).sort.last + 1
+      command_list = []
       COMMANDS.each do |cmd, desc|
-        opts.on(cmd, desc){}
+        padded_cmd = "#{cmd}:".ljust(longest_command, " ")
+        command_list << "    #{padded_cmd} #{desc}"
       end
+      opts.separator command_list
 
       opts.separator ""
-      opts.separator "Specific options:"
+      opts.separator "Specific options:".yellow
 
       opts.on("-c CONFIG_FILE", "--config=CONFIG_FILE", "Config file (default: config/zeta.yml)") do |c|
         options[:config_file] = c
@@ -37,7 +41,7 @@ class Zeta::Runner
       end
 
       opts.separator ""
-      opts.separator "Common options:"
+      opts.separator "Common options:".yellow
 
       opts.on_tail("-h", "--help", "Show this message") do
         puts opts

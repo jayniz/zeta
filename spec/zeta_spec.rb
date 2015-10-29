@@ -93,7 +93,8 @@ describe Zeta do
           :validate_object_to_publish,
           :validate_object_to_publish!,
           :validate_object_to_consume,
-          :validate_object_to_consume!
+          :validate_object_to_consume!,
+          :consume_object
         ]
         methods.each do |m|
           it m do

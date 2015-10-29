@@ -107,6 +107,10 @@ class Zeta
       current_service.validate_object_to_consume(type, data)
     end
 
+    def consume_object(type, data)
+      current_service.consume_object(type, data)
+    end
+
     def current_service
       @current_service ||= infrastructure.services[config[:service_name]]
     end

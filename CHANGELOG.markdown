@@ -1,3 +1,6 @@
+# 0.3.0 (29-Oct-15)
+- forward published/consume object validation method to the current service in the infrastructure
+
 # 0.2.5 (28-Oct-15)
 - better CLI help
 - update lacerda version

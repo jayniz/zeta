@@ -74,11 +74,36 @@ describe Zeta do
     end
   end
 
-  context "delegating to infrastructure" do
-    it "delegates :errors to its infrastructure" do
-      m = Zeta.new(env: :with_remote_services_list, config_file: config_file)
-      expect(m.infrastructure).to receive(:errors).and_return [:foo]
-      expect(m.errors).to eq [:foo]
+  context "delegating to" do
+    let(:z){Zeta.new(env: :with_remote_services_list, config_file: config_file)}
+
+    context "infrastructure" do
+      it ":errors" do
+        expect(z.infrastructure).to receive(:errors).and_return [:foo]
+        expect(z.errors).to eq [:foo]
+      end
+    end
+
+    context "current service" do
+      let(:services_double) { { 'test_service' => double(Lacerda::Service) } }
+      # These should all just be forwarded to the current service
+
+      context "validating objects" do
+        methods = [
+          :validate_object_to_publish,
+          :validate_object_to_publish!,
+          :validate_object_to_consume,
+          :validate_object_to_consume!
+        ]
+        methods.each do |m|
+          it m do
+            expect(z.infrastructure).to receive(:services).and_return(services_double)
+            expect(services_double['test_service']).to receive(m)
+              .with(:type, :data).and_return :result
+            expect(z.send(m, :type, :data)).to eq :result
+          end
+        end
+      end
     end
   end
 
@@ -101,7 +126,7 @@ describe Zeta do
     end
 
     it 'loads a config file' do
-      expect(zeta.config,).to_not be nil
+      expect(zeta.config).to_not be nil
     end
 
     it 'updates the contracts' do

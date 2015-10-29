@@ -91,6 +91,26 @@ class Zeta
         @config = env_config
     end
 
+    def validate_object_to_publish!(type, data)
+      current_service.validate_object_to_publish!(type, data)
+    end
+
+    def validate_object_to_publish(type, data)
+      current_service.validate_object_to_publish(type, data)
+    end
+
+    def validate_object_to_consume!(type, data)
+      current_service.validate_object_to_consume!(type, data)
+    end
+
+    def validate_object_to_consume(type, data)
+      current_service.validate_object_to_consume(type, data)
+    end
+
+    def current_service
+      @current_service ||= infrastructure.services[config[:service_name]]
+    end
+
     private
 
     def verbose?

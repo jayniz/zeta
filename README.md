@@ -215,7 +215,7 @@ Otherwise it will exit with an error and display any contract violations in JSON
 
 ### 5. Usage: in ruby
 
-If you use *Zeta* in ruby, it will automatically know the current service, i.e. the one that it's running in. It will create a singleton `Lacerda::Infrastructure` instance from the [Lacerda gem](https://github.com/moviepilot/Lacerda), which gives you access to a bunch of interesting functions. If you're using [pry](https://github.com/pry/pry), go ahead and do a quick `ls Zeta` and you will something like this, likely outdated, list:
+If you use *Zeta* in ruby, it will automatically know the current service, i.e. the one that it's running in. It will create a singleton `Lacerda::Infrastructure` instance from the [Lacerda gem](https://github.com/moviepilot/lacerda#readme), which gives you access to a bunch of interesting functions. If you're using [pry](https://github.com/pry/pry#readme), go ahead and do a quick `ls Zeta` and you will something like this, likely outdated, list:
 
 ```ruby
 [1] pry(main)> ls Zeta

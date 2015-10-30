@@ -23,7 +23,7 @@ In an infrastructure where many services are talking with each other, it's somet
 
 Let's imagine an imaginary chat app that is split up into three independent services that communicate via a message broker:
 
-- **MessageService** keeps track of the state of to do items
+- **MessageService** keeps track off storing messages
 - **SearchService** makes your chat history searchable
 - **NotificationService**: sends an email when a private message is received
 

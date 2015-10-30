@@ -164,7 +164,7 @@ Whenever you add a service to the infrastructure, you just add it to this centra
 
 If your infrastruture configuration file is HTTP Basic auth protected, or in a private repository on github (that would be a good idea), make sure you `export HTTP_USER=username` and `HTTP_PASSWORD=secret` and *Zeta* will use that. If you host on github, the use your username and generate an API token to use as the password.
 
-### 4. Usage: Command line
+### 4. Usage: Without ruby (CLI)
 
 Zeta comes with a `zeta` command that takes care of all the things:
 
@@ -213,7 +213,7 @@ $ zeta -e development update_own_contracts validate
 
 Otherwise it will exit with an error and display any contract violations in JSON.
 
-### 5. Usage: in ruby
+### 5. Usage: With ruby
 
 If you use *Zeta* in ruby, it will automatically know the current service, i.e. the one that it's running in. It will create a singleton `Lacerda::Infrastructure` instance from the [Lacerda gem](https://github.com/moviepilot/lacerda#readme), which gives you access to a bunch of interesting functions. If you're using [pry](https://github.com/pry/pry#readme), go ahead and do a quick `ls Zeta` and you will something like this, likely outdated, list:
 

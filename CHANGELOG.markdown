@@ -1,3 +1,6 @@
+# 0.4.0 (30-Oct-15)
+- update lacerda which uses ServiceName::Object in favor of ServiceName:Object
+
 # 0.3.0 (29-Oct-15)
 - forward published/consume object validation method to the current service in the infrastructure
 - forward wrapped consume object creation to the current service

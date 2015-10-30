@@ -231,6 +231,6 @@ Zeta.methods:
 Each and every one of these goes directly to your instance `Lacerda::Infrastructure`, as defined by `config/zeta.yml`. Feel free to explore them a bit, but the ones' that might be of most interest are:
 
 - `Zeta.validate_object_to_publish('Post', data_to_send)` makes sure that the content in `data_to_send` conforms to your 'Post' specification in your local `publish.mson`
-- `Zeta.consume_object('MessageService::Message', received_data)` will give you an instance of the [Blumquist](https://github.com/moviepilot/blumquist) class, which is an obect that has getters for all properties you specified in `consume.mson`
+- `Zeta.consume_object('MessageService::Message', received_data)` will give you an instance of the [Blumquist](https://github.com/moviepilot/blumquist#readme) class, which is an obect that has getters for all properties you specified in `consume.mson`
 
 If you use these in your servies, they will help keeping the publish and consume specifications in sync with what's actually happening in the code.

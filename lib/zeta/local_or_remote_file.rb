@@ -30,7 +30,7 @@ class Zeta::LocalOrRemoteFile
   end
 
   def self.http_get(url, verbose)
-    masked_url = ENV['GITHUB_TOKEN'].blank? ? url : url.sub(ENV['GITHUB_TOKEN'], '***')
+    masked_url = ENV['HTTP_PASSWORD'].blank? ? url : url.sub(ENV['HTTP_PASSWORD'], '***')
     print "GET #{masked_url}... " if verbose
     result = HTTParty.get url
     raise "Error #{result.code}" unless result.code == 200
@@ -45,6 +45,8 @@ class Zeta::LocalOrRemoteFile
     !!@options[:verbose]
   end
 
+  # In order not to have git as a dependency, we'll fetch from
+  # raw.githubusercontent.com as long as we get away with it.
   def github_url
     repo   = @options[:github][:repo]
     branch = @options[:github][:branch]
@@ -52,8 +54,10 @@ class Zeta::LocalOrRemoteFile
     file   = @options[:file]
 
     uri = [branch, path, file].compact.join('/')
-    if u = ENV['GITHUB_USER'] and t = ENV['GITHUB_TOKEN']
-      "https://#{u}:#{t}@raw.githubusercontent.com/#{repo}/#{uri}"
+    u = ENV['HTTP_USER'] 
+    p = ENV['HTTP_PASSWORD']
+    if p
+      "https://#{u}:#{p}@raw.githubusercontent.com/#{repo}/#{uri}"
     else
       "https://raw.githubusercontent.com/#{repo}/#{uri}"
     end

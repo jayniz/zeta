@@ -39,14 +39,14 @@ describe Zeta::LocalOrRemoteFile do
     end
 
     it "with auth tokens" do
-      ENV['GITHUB_USER'] = 'user'
-      ENV['GITHUB_TOKEN'] = 'token'
+      ENV['HTTP_USER'] = 'user'
+      ENV['HTTP_PASSWORD'] = 'token'
       begin
         expect(HTTParty).to receive(:get).with("https://user:token@raw.githubusercontent.com/repo/path/foo.txt").and_return(get_double)
         Zeta::LocalOrRemoteFile.new(o).read
       ensure
-        ENV['GITHUB_USER'] = nil
-        ENV['GITHUB_TOKEN'] = nil
+        ENV['HTTP_USER'] = nil
+        ENV['HTTP_PASSWORD'] = nil
       end
     end
 

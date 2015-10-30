@@ -7,11 +7,11 @@
 TLDR:
 - each service defines which objects it publishes or consumes
 - these contracts are formatted in human readable markdown
-- you never have to know/care about other services or repositories
+- you never have to check out other services' repositories
 
 Zeta will:
-- know the rest of your infrastructure and fetches the contracts of all other services
-- alert you if your change in service X breaks service Y
+- know the rest of your infrastructure and fetch the contracts of all other services
+- alert you if your change breaks the expectactions of other services
 ```
 
 In an infrastructure where many services are talking with each other, it's sometimes hard to know **how changes in one service affect other services**, as each service often just knows about itself. Even if local tests pass, you can't know what other services might be affected when you make changes to a service.
@@ -33,7 +33,7 @@ An intern is asked to implement a feature that allows one message to be sent to 
 
 😱But **THE INTERN JUST BROKE THE NOTIFICATION SERVICE** because it depends on the `recipient_id` property 😱
 
-Wouldn't it be nice of some test local to the **MessageService** repository to tell the poorintern that removing the `recipient_id` property breaks the expectations other services have of the *MessageService* BEFORE they deploy?
+Wouldn't it be nice of some test local to the **MessageService** repository to tell the poor intern that removing the `recipient_id` property breaks the expectations other services have regarding the *MessageService* BEFORE the intern hits the red deploy button?
 
 
 ## Yes, it would!
@@ -46,8 +46,8 @@ Each service has to contain two files in order for *Zeta* to do its job:
 These are simple markdown files in the wonderful [MSON](https://github.com/apiaryio/mson) format. Let's look at the contracts dir of **MessageService**, shall we?
 
 ### A publish specification:
+`contracts/publish.mson:`
 ```shell
-/home/dev/message-service$ cat contracts/publish.mson
 # Data Structures
 This file defines what MessageService may publish.
 
@@ -62,8 +62,8 @@ This file defines what MessageService may publish.
 So far so good. This way *MessageService* can tell the world what exactly it means when a `Message` object is published. Much the same, the *NotificationService* could define which properties of a `Message` object from the `MessageService` it is actually interested in:
 
 ### A consume specification:
+`contracts/consume.mson:`
 ```shell
-/home/dev/notification-service$ cat contracts/consume.mson
 # Data Structures
 We just consume one object type, and it comes from the MessageService. Check it out!
 
@@ -84,7 +84,7 @@ As you can see, this consumer expects the `recipient_id` property to be present 
 ## Getting started
 
 ### 1. Installation
-First, add *Zeta* to your `Gemfile` or install manually:
+Even though it does not matter what programming languages your services are written in, you'll need ruby to run Zeta. To install, add *Zeta* to your `Gemfile` or install it manually:
 
 ```shell
 $ gem install zeta
@@ -135,10 +135,11 @@ production:
 
 ```
 
-You typically just create the above file once and then don't touch it anymore. If that file is in a private repository (that would be a good idea), make sure you `export GITHUB_USER=youruser` and `GITHUB_TOKEN=yourtoken` and *Zeta* will use that.
+You typically just create the above file once in each project and then don't touch it anymore. Whenever a new service gets added to or removed from the infrastructure, you just update the central infrastructure configuration. The what? Central infrastructure configuration? Oh, look:
 
-Here's how `github.com/jensmander/zeta-config/infrastructure/master.yml` might look in our example above:
+Here's how the infrastructure configuration file might look for our example above:
 
+`git@github.com:jensmander/zeta-config/infrastructure/master.yml:`
 ```yaml
 MessageService:
   github:
@@ -159,10 +160,15 @@ NotificationService:
 
 Whenever you add a service to the infrastructure, you just add it to this central file and all existing services will automatically know about your new service.
 
+### 3. Authentication
 
-### 3. Usage
+If your infrastruture configuration file is HTTP Basic auth protected, or in a private repository on github (that would be a good idea), make sure you `export HTTP_USER=username` and `HTTP_PASSWORD=secret` and *Zeta* will use that. If you host on github, the use your username and generate an API token to use as the password.
 
-```shell
+### 4. Usage: Command line
+
+Zeta comes with a `zeta` command that takes care of all the things:
+
+```
 Usage: zeta [options] full_check|fetch_remote_contracts|update_own_contracts|validate
 
 Specific options:
@@ -183,9 +189,9 @@ $ zeta -e development full_check
 
 The above command performs the following three steps:
 
-1. Fetch all contracts from remote repositories and put them into the cache directory configured above
-2. Copy the current services contracts (that you might have changed) into the cache directory
-3. Validate all contracts (i.e. make sure that every publishing service satisfies its consumers)
+1. **Fetch all contracts** from remote repositories and put them into the cache directory configured above
+2. **Copy the current service's contracts** which you might have changed into the contracts cache directory
+3. **Validate all contracts** (i.e. make sure that every publishing service satisfies its consumers)
 
 The above commands can also be run in isolation:
 
@@ -206,3 +212,23 @@ $ zeta -e development update_own_contracts validate
 ```
 
 Otherwise it will exit with an error and display any contract violations in JSON.
+
+### 5. Usage: in ruby
+
+If you use *Zeta* in ruby, it will automatically know the current service, i.e. the one that it's running in. It will create a singleton `Lacerda::Infrastructure` instance from the [Lacerda gem](https://github.com/moviepilot/Lacerda), which gives you access to a bunch of interesting functions. If you're using [pry](https://github.com/pry/pry), go ahead and do a quick `ls Zeta` and you will something like this, likely outdated, list:
+
+```ruby
+[1] pry(main)> ls Zeta
+Zeta.methods:
+  cache_dir             current_service   update_own_contracts
+  config                env               validate_object_to_consume
+  config_file           errors            validate_object_to_consume!
+  consume_object        infrastructure    validate_object_to_publish
+  contracts_fulfilled?  update_contracts  validate_object_to_publish!
+[2] pry(main)>
+```
+
+Each and every one of these goes directly to your instance `Lacerda::Infrastructure`, as defined by `config/zeta.yml`. Feel free to explore them a bit, but the ones' that might be of most interest are:
+
+- `Zeta.validate_object_to_publish('Post', data_to_send)` makes sure that the content in `data_to_send` conforms to your 'Post' specification in your local `publish.mson`
+- `Zeta.consume_object('MessageService::Message', received_data)` will give you an instance of the [Blumquist](https://github.com/moviepilot/blumquist) class, which is an obect that has getters for all properties you specified in `consume.mson`

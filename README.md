@@ -67,7 +67,7 @@ So far so good. This way *MessageService* can tell the world what exactly it mea
 # Data Structures
 We just consume one object type, and it comes from the MessageService. Check it out!
 
-# MessageService:Message
+# MessageService::Message
 - sender_id: (number, required)
 - recipient_id: (number, required)
 ```

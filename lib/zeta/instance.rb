@@ -42,7 +42,8 @@ class Zeta
     end
 
     def contracts_fulfilled?
-      infrastructure.contracts_fulfilled?
+      reporter = Lacerda::Reporters::Stdout.new(verbose: verbose?)
+      infrastructure.contracts_fulfilled?(reporter)
     end
 
     def infrastructure

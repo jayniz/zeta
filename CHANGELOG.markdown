@@ -1,3 +1,7 @@
+# 0.5.0 (02-Nov-15)
+- update lacerda
+- use lacerda stdout reporter by default
+
 # 0.4.0 (30-Oct-15)
 - update lacerda which uses ServiceName::Object in favor of ServiceName:Object
 

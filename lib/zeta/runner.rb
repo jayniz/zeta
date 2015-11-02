@@ -81,11 +81,8 @@ class Zeta::Runner
         puts "Validating your infrastructure with #{zeta.infrastructure.publishers.length} publishers and #{zeta.infrastructure.consumers.length} consumers..." if options[:verbose]
         zeta.contracts_fulfilled?
         unless zeta.errors.empty?
-          puts JSON.pretty_generate(zeta.errors)
-          puts "#{zeta.errors.length} contract violations".red
           exit(-1)
         end
-        puts "All contracts valid 🙌".green if options[:verbose]
       end
     rescue => e
       if options[:verbose]

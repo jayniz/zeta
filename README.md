@@ -46,7 +46,7 @@ Each service has to contain two files in order for *Zeta* to do its job:
 These are simple markdown files in the wonderful [MSON](https://github.com/apiaryio/mson) format. Let's look at the contracts dir of **MessageService**, shall we?
 
 ### A publish specification:
-`contracts/publish.mson:`
+`contracts/publish.mson`:
 ```shell
 # Data Structures
 This file defines what MessageService may publish.
@@ -62,7 +62,7 @@ This file defines what MessageService may publish.
 So far so good. This way *MessageService* can tell the world what exactly it means when a `Message` object is published. Much the same, the *NotificationService* could define which properties of a `Message` object from the `MessageService` it is actually interested in:
 
 ### A consume specification:
-`contracts/consume.mson:`
+`contracts/consume.mson`:
 ```shell
 # Data Structures
 We just consume one object type, and it comes from the MessageService. Check it out!
@@ -75,7 +75,7 @@ We just consume one object type, and it comes from the MessageService. Check it 
 As you can see, this consumer expects the `recipient_id` property to be present when a `Message` object is received from `MessageService`. While a publish specification just defines objects, a consume specification prefixes the names of objects it consumes with the name of the service publishing the object. As in our example above:
 
 ```
-# MessageService:Message
+# MessageService::Message
      |              `---------- object name
      `------------------------- service name
 
@@ -139,7 +139,7 @@ You typically just create the above file once in each project and then don't tou
 
 Here's how the infrastructure configuration file might look for our example above:
 
-`git@github.com:jensmander/zeta-config/infrastructure/master.yml:`
+`git@github.com:jensmander/zeta-config/infrastructure/master.yml`:
 ```yaml
 MessageService:
   github:

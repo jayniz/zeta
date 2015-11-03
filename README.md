@@ -234,3 +234,16 @@ Each and every one of these goes directly to your instance `Lacerda::Infrastruct
 - `Zeta.consume_object('MessageService::Message', received_data)` will give you an instance of the [Blumquist](https://github.com/moviepilot/blumquist#readme) class, which is an obect that has getters for all properties you specified in `consume.mson`
 
 If you use these in your servies, they will help keeping the publish and consume specifications in sync with what's actually happening in the code.
+
+### RSpec integration
+
+Of course you'll want to have your infrastructure checked in CI. If you're using RSpec, we've got you covered. Just place the following lines in, for example, `spec/zeta_spec.rb`:
+
+``ruby
+require_relative 'spec_helper'
+
+require 'zeta/rspec'
+Zeta.run_specs
+```
+
+This will do the same as a `zeta -e test full_check` would do on the command line, but reporting to RSpec instead of printing its output directly.

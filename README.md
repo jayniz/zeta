@@ -48,7 +48,6 @@ These are simple markdown files in the wonderful [MSON](https://github.com/apiar
 ### A publish specification:
 `contracts/publish.mson`:
 ```shell
-# Data Structures
 This file defines what MessageService may publish.
 
 # Message
@@ -64,7 +63,6 @@ So far so good. This way *MessageService* can tell the world what exactly it mea
 ### A consume specification:
 `contracts/consume.mson`:
 ```shell
-# Data Structures
 We just consume one object type, and it comes from the MessageService. Check it out!
 
 # MessageService::Message

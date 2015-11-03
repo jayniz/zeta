@@ -162,7 +162,7 @@ Whenever you add a service to the infrastructure, you just add it to this centra
 
 ### 3. Authentication
 
-If your infrastruture configuration file is HTTP Basic auth protected, or in a private repository on github (that would be a good idea), make sure you `export HTTP_USER=username` and `HTTP_PASSWORD=secret` and *Zeta* will use that. If you host on github, the use your username and generate an API token to use as the password.
+If your infrastruture configuration file is HTTP Basic auth protected, or in a private repository on github (that would be a good idea), make sure you `export HTTP_USER=username` and `HTTP_PASSWORD=secret` and *Zeta* will use that. If you host on github, then use your github username as `HTTP_USER` and generate an API token to use as the `HTTP_PASSWORD`.
 
 ### 4. Usage: Without ruby (CLI)
 

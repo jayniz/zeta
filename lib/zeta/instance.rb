@@ -13,12 +13,12 @@ class Zeta
     def initialize(options = {})
       @mutex = Mutex.new
       @options = options
-      puts "Using config file #{config_file}" if verbose?
     end
 
     def update_contracts
       i = infrastructure
       @mutex.synchronize do
+        clear_cache
         puts "Updating #{cache_dir}" if verbose?
         update_other_contracts
         update_own_contracts
@@ -41,8 +41,8 @@ class Zeta
       infrastructure.errors
     end
 
-    def contracts_fulfilled?
-      reporter = Lacerda::Reporters::Stdout.new(verbose: verbose?)
+    def contracts_fulfilled?(reporter = nil)
+      reporter ||= Lacerda::Reporters::Stdout.new(verbose: verbose?)
       infrastructure.contracts_fulfilled?(reporter)
     end
 
@@ -75,6 +75,17 @@ class Zeta
         full_path = File.expand_path(config[:contracts_cache_path])
         FileUtils.mkdir_p(full_path)
         @cache_dir = full_path
+    end
+
+    def clear_cache
+      # I'm afraid of FileUtils.rm_rf so I'll just delete all relevant files
+      # and then rmdir all empty directories.
+      Dir[File.join(cache_dir, "/support/**/*.mson")].each{|f| FileUtils.rm(f) }
+      Dir[File.join(cache_dir, "/support/**/*.json")].each{|f| FileUtils.rm(f) }
+      Dir[File.join(cache_dir, '*')].each do |d|
+        next unless File.directory?(d)
+        FileUtils.rmdir(d) rescue nil
+      end
     end
 
     def config
@@ -114,6 +125,10 @@ class Zeta
 
     def current_service
       @current_service ||= infrastructure.services[config[:service_name]]
+    end
+
+    def verbose=(val)
+      @options[:verbose] = !!val
     end
 
     private

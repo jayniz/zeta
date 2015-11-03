@@ -1,3 +1,8 @@
+# 0.6.0 (03-Nov-15)
+- make reporter configurable for contracts_fulfilled?
+- add rspec integration
+- add Zeta.verbose= setter
+
 # 0.5.0 (02-Nov-15)
 - update lacerda
 - use lacerda stdout reporter by default

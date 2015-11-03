@@ -2,7 +2,11 @@ require 'spec_helper'
 
 describe Zeta do
   let(:config_file){ File.expand_path(File.join(__FILE__, '..', 'support', 'config.yml')) }
-  let(:zeta){ Zeta.new(config_file: config_file, env: :with_inline_services, verbose: false) }
+  let(:zeta){
+    z = Zeta.new(config_file: config_file, env: :with_inline_services)
+    z.verbose = false
+    z
+  }
 
   after(:all) do
     # Clean up

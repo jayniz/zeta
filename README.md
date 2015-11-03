@@ -239,11 +239,12 @@ If you use these in your servies, they will help keeping the publish and consume
 
 Of course you'll want to have your infrastructure checked in CI. If you're using RSpec, we've got you covered. Just place the following lines in, for example, `spec/zeta_spec.rb`:
 
-``ruby
+```ruby
 require_relative 'spec_helper'
 
 require 'zeta/rspec'
-Zeta.run_specs
+Zeta::RSpec.update_contracts
+Zeta::RSpec.run
 ```
 
-This will do the same as a `zeta -e test full_check` would do on the command line, but reporting to RSpec instead of printing its output directly.
+This will do the same as a `zeta -e test full_check` would do on the command line, but reporting to RSpec instead of printing its output directly. Whether or not you run `Zeta::RSpec.update_contracts` is up to you - perhaps you have HTTP requests disabled in your test suite, or you don't want to be network dependant for every run. If you remove it, however, make sure you run `zeta -e test fetch_remote_contracts` often enough to not be outdated.

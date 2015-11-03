@@ -1,3 +1,6 @@
+# 0.6.1 (03-Nov-15)
+- make rspec integration a little more convenient
+
 # 0.6.0 (03-Nov-15)
 - make reporter configurable for contracts_fulfilled?
 - add rspec integration

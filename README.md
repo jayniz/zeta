@@ -48,8 +48,6 @@ These are simple markdown files in the wonderful [MSON](https://github.com/apiar
 ### A publish specification:
 `contracts/publish.mson`:
 ```shell
-This file defines what MessageService may publish.
-
 # Message
 - id: (number, required)
 - sender_id: (number, required)
@@ -63,8 +61,6 @@ So far so good. This way *MessageService* can tell the world what exactly it mea
 ### A consume specification:
 `contracts/consume.mson`:
 ```shell
-We just consume one object type, and it comes from the MessageService. Check it out!
-
 # MessageService::Message
 - sender_id: (number, required)
 - recipient_id: (number, required)

@@ -169,6 +169,7 @@ Specific options:
     -c, --config=CONFIG_FILE         Config file (default: config/zeta.yml)
     -e, --env=ENVIRONMENT            Environment (default: RAILS_ENV, if it is set)
     -s, --silent                     No output, just an appropriate return code
+    -t, --trace                      Print exception stack traces
 
 Common options:
     -h, --help                       Show this message

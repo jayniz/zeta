@@ -40,6 +40,10 @@ class Zeta::Runner
         options[:silent] = s
       end
 
+      opts.on("-t", "--trace", "Print exception stack traces") do |t|
+        options[:trace] = t
+      end
+
       opts.separator ""
       opts.separator "Common options:".yellow
 
@@ -85,7 +89,7 @@ class Zeta::Runner
         end
       end
     rescue => e
-      if options[:verbose]
+      if options[:trace]
         raise
       else
         puts "ERROR: ".red + e.message

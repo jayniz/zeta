@@ -1,3 +1,7 @@
+# 0.6.2 (04-Nov-15)
+- update Lacerda
+- add --trace option so we don't bother people with exception traces all the time
+
 # 0.6.1 (03-Nov-15)
 - make rspec integration a little more convenient
 

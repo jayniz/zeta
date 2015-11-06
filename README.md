@@ -215,11 +215,12 @@ If you use *Zeta* in ruby, it will automatically know the current service, i.e. 
 ```ruby
 [1] pry(main)> ls Zeta
 Zeta.methods:
-  cache_dir             current_service   update_own_contracts
-  config                env               validate_object_to_consume
-  config_file           errors            validate_object_to_consume!
-  consume_object        infrastructure    validate_object_to_publish
-  contracts_fulfilled?  update_contracts  validate_object_to_publish!
+  cache_dir             current_service       validate_object_to_consume
+  clear_cache           env                   validate_object_to_consume!
+  config                errors                validate_object_to_publish
+  config_file           infrastructure        validate_object_to_publish!
+  consume_object        update_contracts      verbose=
+  contracts_fulfilled?  update_own_contracts
 [2] pry(main)>
 ```
 

@@ -24,6 +24,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'httparty', '~> 0.13'
   spec.add_runtime_dependency 'colorize'
   spec.add_runtime_dependency 'webmock'
+  spec.add_runtime_dependency 'tins', '~> 1.6.0'
 
   spec.add_development_dependency 'bundler', '~> 1.9'
   spec.add_development_dependency 'guard-bundler'

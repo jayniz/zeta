@@ -1,3 +1,10 @@
+# 0.7.0
+- update Lacerda to ~> 0.12
+- add Zeta.convert_all! convenience method
+
+# 0.6.0 (06-Nov-15)
+- update Lacerda
+
 # 0.6.2 (04-Nov-15)
 - update Lacerda
 - add --trace option so we don't bother people with exception traces all the time

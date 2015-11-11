@@ -86,6 +86,11 @@ describe Zeta do
         expect(z.infrastructure).to receive(:errors).and_return [:foo]
         expect(z.errors).to eq [:foo]
       end
+
+      it ":convert_all!" do
+        expect(z.infrastructure).to receive(:convert_all!).and_return :wyclef
+        expect(z.convert_all!).to eq :wyclef
+      end
     end
 
     context "current service" do

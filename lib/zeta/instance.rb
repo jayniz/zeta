@@ -27,6 +27,13 @@ class Zeta
       true
     end
 
+    def convert_all!
+      i = infrastructure
+      @mutex.synchronize do
+        i.convert_all!
+      end
+    end
+
     def update_own_contracts
       contract_files.each do |file|
         source_file = File.join(config[:contracts_path], file)

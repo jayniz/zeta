@@ -2,8 +2,6 @@ require 'colorize'
 require 'httparty'
 require 'open-uri'
 
-require 'pry'
-
 class Zeta::LocalOrRemoteFile
   def initialize(options)
     @options = options

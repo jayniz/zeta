@@ -1,3 +1,6 @@
+# 0.7.1
+- remove require 'pry'
+
 # 0.7.0
 - update Lacerda to ~> 0.12
 - add Zeta.convert_all! convenience method

@@ -1,3 +1,6 @@
+# 0.7.2
+- fix https://github.com/moviepilot/zeta/issues/13
+
 # 0.7.1
 - remove require 'pry'
 

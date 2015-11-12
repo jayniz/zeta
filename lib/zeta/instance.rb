@@ -38,6 +38,7 @@ class Zeta
       contract_files.each do |file|
         source_file = File.join(config[:contracts_path], file)
         target_file = File.join(cache_dir, config[:service_name], file)
+        FileUtils.mkdir_p(File.join(cache_dir, config[:service_name])
         puts "cp #{source_file} #{target_file}" if verbose?
         FileUtils.rm_f(target_file)
         FileUtils.cp(source_file, target_file) if File.exists?(source_file)

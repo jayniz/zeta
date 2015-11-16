@@ -88,8 +88,8 @@ class Zeta
     def clear_cache
       # I'm afraid of FileUtils.rm_rf so I'll just delete all relevant files
       # and then rmdir all empty directories.
-      Dir[File.join(cache_dir, "/support/**/*.mson")].each{|f| FileUtils.rm(f) }
-      Dir[File.join(cache_dir, "/support/**/*.json")].each{|f| FileUtils.rm(f) }
+      Dir[File.join(cache_dir, "**/*.mson")].each{|f| FileUtils.rm(f) }
+      Dir[File.join(cache_dir, "**/*.json")].each{|f| FileUtils.rm(f) }
       Dir[File.join(cache_dir, '*')].each do |d|
         next unless File.directory?(d)
         FileUtils.rmdir(d) rescue nil

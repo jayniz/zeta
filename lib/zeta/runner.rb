@@ -93,6 +93,7 @@ class Zeta::Runner
         raise
       else
         puts "ERROR: ".red + e.message
+        puts "(Pssst: try the "+"--trace".yellow+" option?)"
       end
       exit(-1)
     end

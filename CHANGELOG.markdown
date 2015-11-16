@@ -1,5 +1,12 @@
+# 0.7.4
+- hint to --trace option on error
+- fix cache dir cleanup on refetch
+
 # 0.7.3
 - fix https://github.com/moviepilot/zeta/issues/13
+
+# 0.7.2
+- broken 😱 
 
 # 0.7.1
 - remove require 'pry'

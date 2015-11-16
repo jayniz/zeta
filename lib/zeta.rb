@@ -14,7 +14,10 @@ class Zeta
     define_singleton_method method do |*args|
       send_args = [method, args].flatten.compact
       MUTEX.synchronize do
-        @singleton ||= new(verbose: true)
+        unless @singleton
+          @singleton = new(verbose: true)
+          @singleton.update_contracts
+        end
         @singleton.send(*send_args)
       end
     end

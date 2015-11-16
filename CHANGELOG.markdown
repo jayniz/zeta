@@ -1,3 +1,6 @@
+# 0.8.0
+- the Zeta singleton will update its contracts after it's initialized
+
 # 0.7.4
 - hint to --trace option on error
 - fix cache dir cleanup on refetch
@@ -6,7 +9,7 @@
 - fix https://github.com/moviepilot/zeta/issues/13
 
 # 0.7.2
-- broken 😱 
+- broken 😱
 
 # 0.7.1
 - remove require 'pry'

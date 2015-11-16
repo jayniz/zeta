@@ -23,6 +23,7 @@ describe Zeta do
       zeta = Zeta.new(verbose: false)
       expect(Zeta).to receive(:new).and_return(zeta)
       expect(zeta).to receive(:errors).and_return([])
+      expect(zeta).to receive(:update_contracts)
 
       expect(Zeta.errors).to eq []
     end

@@ -20,12 +20,12 @@ describe Zeta do
 
   context "singleton" do
     it "creates a singleton with a default config on demand" do
-      zeta = Zeta.new(verbose: false)
-      expect(Zeta).to receive(:new).and_return(zeta)
-      expect(zeta).to receive(:errors).and_return([])
-      expect(zeta).to receive(:update_contracts)
-
-      expect(Zeta.errors).to eq []
+      default = File.join(Dir.pwd, 'config', 'zeta.yml')
+      expect{
+        Zeta.current_service
+      }.to raise_error do |error|
+        expect(error.message.include?(default)).to be true
+      end
     end
   end
 

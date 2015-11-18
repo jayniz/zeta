@@ -15,8 +15,16 @@ class Zeta
       send_args = [method, args].flatten.compact
       MUTEX.synchronize do
         unless @singleton
+          # Create a Zeta singleton
           @singleton = new(verbose: true)
-          @singleton.update_contracts
+
+          # Copy the current service's specifications to cache dir
+          @singleton.update_own_contracts
+
+          # Convert current service's specifications so published and
+          # consumed objects of this service can be validated at
+          # runtime
+          @singleton.infrastructure.convert_all!
         end
         @singleton.send(*send_args)
       end

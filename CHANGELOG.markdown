@@ -1,3 +1,8 @@
+# 0.10.0
+- the Zeta singleton will only transform its own contracts after it's
+  initialized, but not fetch remote contracts as this is not necessary
+  at runtime see [#15](https://github.com/moviepilot/zeta/issues/15)
+
 # 0.9.0
 - change http basic auth env vars to ZETA_HTTP_USER and ZETA_HTTP_PASSWORD
 

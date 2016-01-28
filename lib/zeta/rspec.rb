@@ -29,7 +29,7 @@ class Zeta::RSpec
   def self.run
     Zeta.verbose = false
     ensure_contracts_present
-    Zeta.update_own_contracts
+    Zeta.update_contracts
     Zeta.contracts_fulfilled?(Lacerda::Reporters::RSpec.new)
   end
 end

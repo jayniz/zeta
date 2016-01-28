@@ -13,7 +13,7 @@ class Zeta::RSpec
   
       it "download specifications" do
         expect{
-          # Zeta.verbose = false
+          Zeta.verbose = false
           Zeta.update_contracts
         }.to_not raise_error
       end

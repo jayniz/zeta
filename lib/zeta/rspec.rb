@@ -3,7 +3,7 @@ require 'zeta'
 
 # Include this file in your spec/spec_helper.rb
 class Zeta::RSpec
-  def self.update_contracts
+  def self.run
     RSpec.describe "Update Zeta infrastructure once" do
       it "download infrastructure" do
         expect{

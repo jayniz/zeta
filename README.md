@@ -240,7 +240,6 @@ require_relative 'spec_helper'
 
 require 'zeta/rspec'
 Zeta::RSpec.update_contracts
-Zeta::RSpec.run
 ```
 
 This will do the same as a `zeta -e test full_check` would do on the command line, but reporting to RSpec instead of printing its output directly. Whether or not you run `Zeta::RSpec.update_contracts` is up to you - perhaps you have HTTP requests disabled in your test suite, or you don't want to be network dependant for every run. If you remove it, however, make sure you run `zeta -e test fetch_remote_contracts` often enough to not be outdated.

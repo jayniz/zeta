@@ -1,3 +1,6 @@
+# 0.11.1
+- Fix RSpec runner
+
 # 0.11.0
 - Use a lacerda version that makes optional attributes nullable by
   default. If you have an object with an optional property `foo`,

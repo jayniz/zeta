@@ -1,3 +1,6 @@
+# 0.11.2
+- Make RSpec runner less verbose when downloading specifications
+
 # 0.11.1
 - Fix RSpec runner
 

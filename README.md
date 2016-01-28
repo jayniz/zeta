@@ -239,7 +239,6 @@ Of course you'll want to have your infrastructure checked in CI. If you're using
 require_relative 'spec_helper'
 
 require 'zeta/rspec'
-Zeta::RSpec.update_contracts
 Zeta::RSpec.run
 ```
 

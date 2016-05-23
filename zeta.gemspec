@@ -18,16 +18,15 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
-  spec.add_runtime_dependency 'rake', '~> 10.2'
-  spec.add_runtime_dependency 'lacerda', '~> 0.13'
+  spec.add_runtime_dependency 'rake'
+  spec.add_runtime_dependency 'lacerda', '~> 0.14'
   spec.add_runtime_dependency 'activesupport'
-  spec.add_runtime_dependency 'httparty', '~> 0.13'
+  spec.add_runtime_dependency 'httparty'
   spec.add_runtime_dependency 'colorize'
   spec.add_runtime_dependency 'webmock'
-  spec.add_runtime_dependency 'tins', '~> 1.6.0'
 
-  spec.add_development_dependency 'bundler', '~> 1.9'
+  spec.add_development_dependency 'bundler'
   spec.add_development_dependency 'guard-bundler'
   spec.add_development_dependency 'guard-rspec'
-  spec.add_development_dependency "coveralls",           ["~> 0.8"]
+  spec.add_development_dependency "coveralls"
 end

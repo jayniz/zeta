@@ -1,3 +1,9 @@
+# 0.12.0
+- Update Lacerda (fixes required arrays being marked as invalid
+  when they're empty)
+- Update a couple of dependency
+- Drop ruby 1.9 support, tests run on 2.3.0
+
 # 0.11.2
 - Make RSpec runner less verbose when downloading specifications
 

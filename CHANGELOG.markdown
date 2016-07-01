@@ -1,3 +1,6 @@
+# 0.12.1
+- Retry failed downloads up to 3 times
+
 # 0.12.0
 - Update Lacerda (fixes required arrays being marked as invalid
   when they're empty)

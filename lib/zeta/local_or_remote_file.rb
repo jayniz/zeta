@@ -28,15 +28,18 @@ class Zeta::LocalOrRemoteFile
   end
 
   def self.http_get(url, verbose)
+    retries ||= 3
     masked_url = ENV['ZETA_HTTP_PASSWORD'].blank? ? url : url.sub(ENV['ZETA_HTTP_PASSWORD'], '***')
     print "GET #{masked_url}... " if verbose
     result = HTTParty.get url
-    raise "Error #{result.code}" unless result.code == 200
+    raise "Error #{result.code}: #{result}" unless result.code == 200
     print "OK\n".green if verbose
     result.to_s
   rescue
     print "ERROR\n".blue if verbose
-    raise
+    raise if (retries -= 1).zero?
+    sleep 1
+    retry
   end
 
   def verbose?
@@ -52,7 +55,7 @@ class Zeta::LocalOrRemoteFile
     file   = @options[:file]
 
     uri = [branch, path, file].compact.join('/')
-    u = ENV['ZETA_HTTP_USER'] 
+    u = ENV['ZETA_HTTP_USER']
     p = ENV['ZETA_HTTP_PASSWORD']
     if p
       "https://#{u}:#{p}@raw.githubusercontent.com/#{repo}/#{uri}"

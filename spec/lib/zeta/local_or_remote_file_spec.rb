@@ -52,12 +52,12 @@ describe Zeta::LocalOrRemoteFile do
 
     it "raises a 404" do
       not_found = double(to_s: 'Something', code: 404)
-      expect(HTTParty).to receive(:get).with("https://raw.githubusercontent.com/repo/path/foo.txt").and_return(not_found)
+      expect(HTTParty).to receive(:get).with("https://raw.githubusercontent.com/repo/path/foo.txt").and_return(not_found).at_least(1)
 
       expect {
         Zeta::LocalOrRemoteFile.new(o).read
       }.to raise_error{ |e|
-        expect(e.to_s.end_with?("Error 404")).to be true
+        expect(e.to_s.include?("Error 404")).to be true
       }
     end
   end

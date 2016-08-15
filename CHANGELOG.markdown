@@ -1,3 +1,6 @@
+# 0.12.3
+- Force rspec examples (in RSpec integration of zeta, not its own tests) to run in order
+
 # 0.12.1
 - Retry failed downloads up to 3 times
 

@@ -6,6 +6,24 @@ class Zeta
   include Zeta::Instance
   MUTEX = Mutex.new
 
+  def self.instance
+    return @instance if @instance
+    MUTEX.synchronize do
+      unless @instance
+        # Create a Zeta instance
+        @instance = new(verbose: true)
+
+        # Copy the current service's specifications to cache dir
+        @instance.update_own_contracts
+
+        # Convert current service's specifications so published and
+        # consumed objects of this service can be validated at
+        # runtime
+        @instance.convert_all!
+      end
+    end
+  end
+
   # Not using the SingleForwardable module here so that, when
   # somebody tries to figure out how Zeta works by looking at
   # its methods, they don't get confused.
@@ -13,21 +31,7 @@ class Zeta
   methods.each do |method|
     define_singleton_method method do |*args|
       send_args = [method, args].flatten.compact
-      MUTEX.synchronize do
-        unless @singleton
-          # Create a Zeta singleton
-          @singleton = new(verbose: true)
-
-          # Copy the current service's specifications to cache dir
-          @singleton.update_own_contracts
-
-          # Convert current service's specifications so published and
-          # consumed objects of this service can be validated at
-          # runtime
-          @singleton.infrastructure.convert_all!
-        end
-        @singleton.send(*send_args)
-      end
+      instance.send(*send_args)
     end
   end
 end

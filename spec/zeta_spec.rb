@@ -82,6 +82,18 @@ describe Zeta do
   context "delegating to" do
     let(:z){Zeta.new(env: :with_remote_services_list, config_file: config_file, verbose: false)}
 
+    context "singleton" do
+      it "updates and converts contracts when it's created" do
+        Zeta.instance_variable_set(:@instance, nil)
+        instance_mock = double(Zeta)
+        expect(instance_mock).to receive(:update_own_contracts)
+        expect(instance_mock).to receive(:convert_all!)
+        expect(Zeta).to receive(:new).with(verbose: true).and_return instance_mock
+
+        Zeta.instance
+      end
+    end
+
     context "infrastructure" do
       it ":errors" do
         expect(z.infrastructure).to receive(:errors).and_return [:foo]

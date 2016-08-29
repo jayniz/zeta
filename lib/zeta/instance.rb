@@ -11,13 +11,13 @@ class Zeta
     attr_reader :config
 
     def initialize(options = {})
-      @mutex = Mutex.new
+      @lock = Monitor.new
       @options = options
     end
 
     def update_contracts
-      i = infrastructure
-      @mutex.synchronize do
+      @lock.synchronize do
+        i = infrastructure
         clear_cache
         puts "Updating #{cache_dir}" if verbose?
         update_other_contracts
@@ -28,20 +28,21 @@ class Zeta
     end
 
     def convert_all!
-      i = infrastructure
-      @mutex.synchronize do
-        i.convert_all!
+      @lock.synchronize do
+        infrastructure.convert_all!
       end
     end
 
     def update_own_contracts
-      contract_files.each do |file|
-        source_file = File.join(config[:contracts_path], file)
-        target_file = File.join(cache_dir, config[:service_name], file)
-        FileUtils.mkdir_p(File.join(cache_dir, config[:service_name]))
-        puts "cp #{source_file} #{target_file}" if verbose?
-        FileUtils.rm_f(target_file)
-        FileUtils.cp(source_file, target_file) if File.exists?(source_file)
+      @lock.synchronize do
+        contract_files.each do |file|
+          source_file = File.join(config[:contracts_path], file)
+          target_file = File.join(cache_dir, config[:service_name], file)
+          FileUtils.mkdir_p(File.join(cache_dir, config[:service_name]))
+          puts "cp #{source_file} #{target_file}" if verbose?
+          FileUtils.rm_f(target_file)
+          FileUtils.cp(source_file, target_file) if File.exists?(source_file)
+        end
       end
     end
 
@@ -55,7 +56,7 @@ class Zeta
     end
 
     def infrastructure
-      @mutex.synchronize do
+      @lock.synchronize do
         return @infrastructure if @infrastructure
         @infrastructure = Lacerda::Infrastructure.new(data_dir: cache_dir, verbose: verbose?)
         @infrastructure
@@ -79,24 +80,29 @@ class Zeta
     end
 
     def cache_dir
+      @lock.synchronize do
         return @cache_dir if @cache_dir
         full_path = File.expand_path(config[:contracts_cache_path])
         FileUtils.mkdir_p(full_path)
         @cache_dir = full_path
+      end
     end
 
     def clear_cache
-      # I'm afraid of FileUtils.rm_rf so I'll just delete all relevant files
-      # and then rmdir all empty directories.
-      Dir[File.join(cache_dir, "**/*.mson")].each{|f| FileUtils.rm(f) }
-      Dir[File.join(cache_dir, "**/*.json")].each{|f| FileUtils.rm(f) }
-      Dir[File.join(cache_dir, '*')].each do |d|
-        next unless File.directory?(d)
-        FileUtils.rmdir(d) rescue nil
+      @lock.synchronize do
+        # I'm afraid of FileUtils.rm_rf so I'll just delete all relevant files
+        # and then rmdir all empty directories.
+        Dir[File.join(cache_dir, "**/*.mson")].each{|f| FileUtils.rm(f) }
+        Dir[File.join(cache_dir, "**/*.json")].each{|f| FileUtils.rm(f) }
+        Dir[File.join(cache_dir, '*')].each do |d|
+          next unless File.directory?(d)
+          FileUtils.rmdir(d) rescue nil
+        end
       end
     end
 
     def config
+      @lock.synchronize do
         return @config if @config
         full_config = YAML.load_file(config_file).with_indifferent_access
         env_config  = full_config[env]
@@ -109,6 +115,7 @@ class Zeta
         end
 
         @config = env_config
+      end
     end
 
     def validate_object_to_publish!(type, data)

@@ -7,8 +7,8 @@ class Zeta
   MUTEX = Mutex.new
 
   def self.instance
-    return @instance if @instance
     MUTEX.synchronize do
+      return @instance if @instance
       unless @instance
         # Create a Zeta instance
         @instance = new(verbose: true)
@@ -20,8 +20,10 @@ class Zeta
         # consumed objects of this service can be validated at
         # runtime
         @instance.convert_all!
+
       end
     end
+    @instance
   end
 
   # Not using the SingleForwardable module here so that, when

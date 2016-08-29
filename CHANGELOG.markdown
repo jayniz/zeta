@@ -1,3 +1,6 @@
+# 0.12.5
+- More conservative locking
+
 # 0.12.4
 - More conservative locking
 

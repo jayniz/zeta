@@ -1,3 +1,6 @@
+# 0.12.4
+- More conservative locking
+
 # 0.12.3
 - Force rspec examples (in RSpec integration of zeta, not its own tests) to run in order
 

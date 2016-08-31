@@ -4,26 +4,32 @@ require 'zeta/instance'
 
 class Zeta
   include Zeta::Instance
-  MUTEX = Mutex.new
+  LOCK = Monitor.new
 
   def self.instance
-    MUTEX.synchronize do
-      return @instance if @instance
-      unless @instance
-        # Create a Zeta instance
-        @instance = new(verbose: true)
-
-        # Copy the current service's specifications to cache dir
-        @instance.update_own_contracts
-
-        # Convert current service's specifications so published and
-        # consumed objects of this service can be validated at
-        # runtime
-        @instance.convert_all!
-
+    LOCK.synchronize do
+      if @instance.nil?
+        create_instance
       end
+      @instance
     end
-    @instance
+  end
+
+  def self.create_instance(options = {verbose: true})
+    LOCK.synchronize do
+      # Create a Zeta instance
+      @instance = new(verbose: true)
+
+      # Copy the current service's specifications to cache dir
+      @instance.update_own_contracts
+
+      # Convert current service's specifications so published and
+      # consumed objects of this service can be validated at
+      # runtime
+      @instance.convert_all!
+
+      @instance
+    end
   end
 
   # Not using the SingleForwardable module here so that, when

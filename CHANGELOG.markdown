@@ -1,3 +1,6 @@
+# 0.13.0
+- Add explicit Zeta.create_instance initializer with support to pass in options
+
 # 0.12.5
 - More conservative locking
 

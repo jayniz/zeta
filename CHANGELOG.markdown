@@ -1,4 +1,4 @@
-# 0.13.0
+# 0.13.1
 - Add explicit Zeta.create_instance initializer with support to pass in options
 
 # 0.12.5

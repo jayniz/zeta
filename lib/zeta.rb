@@ -18,7 +18,7 @@ class Zeta
   def self.create_instance(options = {verbose: true})
     LOCK.synchronize do
       # Create a Zeta instance
-      @instance = new(verbose: true)
+      @instance = new(options)
 
       # Copy the current service's specifications to cache dir
       @instance.update_own_contracts

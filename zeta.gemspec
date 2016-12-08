@@ -19,7 +19,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_runtime_dependency 'rake'
-  spec.add_runtime_dependency 'lacerda', '~> 0.14', '>= 0.14.2'
+  spec.add_runtime_dependency 'lacerda', '1.0.0.beta1'
   spec.add_runtime_dependency 'activesupport'
   spec.add_runtime_dependency 'httparty'
   spec.add_runtime_dependency 'colorize'

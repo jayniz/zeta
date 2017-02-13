@@ -20,7 +20,7 @@ class Zeta::RSpec
       end
 
       it "validate infrastructure" do
-        Zeta.contracts_fulfilled?(Lacerda::Reporters::RSpec.new)
+        expect(Zeta.contracts_fulfilled?(Lacerda::Reporters::RSpec.new)).to eq true
       end
     end
   end

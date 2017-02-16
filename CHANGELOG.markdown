@@ -1,3 +1,5 @@
+# 0.13.2
+- Fix Zeta::RSpec so it can fail correctly
 # 0.13.1
 - Add explicit Zeta.create_instance initializer with support to pass in options
 

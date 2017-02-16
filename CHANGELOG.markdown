@@ -2,6 +2,10 @@
 - Use lacerda 1.0.0, which has some breaking changes. See 
   [the changelog](https://github.com/moviepilot/lacerda/blob/master/CHANGELOG.markdown#100)
 - Fix `Zeta::RSpec` contract validation
+
+# 0.13.2
+- Fix `Zeta::RSpec` contract validation
+
 # 0.13.1
 - Add explicit Zeta.create_instance initializer with support to pass in options
 

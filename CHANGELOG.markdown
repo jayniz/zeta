@@ -1,3 +1,6 @@
+# 1.1.0
+- Update blumquist and lacerda dependencies to show better errors
+
 # 1.0.0
 - Use lacerda 1.0.0, which has some breaking changes. See 
   [the changelog](https://github.com/moviepilot/lacerda/blob/master/CHANGELOG.markdown#100)

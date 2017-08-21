@@ -1,3 +1,6 @@
+# 2.0.0
+- Update to lacerda 2.0: adds enum support and raises parsing errors instead of silently returning an empty contract
+
 # 1.1.0
 - Update blumquist and lacerda dependencies to show better errors
 

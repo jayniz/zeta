@@ -2,8 +2,8 @@ require 'lacerda/reporters/rspec'
 require 'zeta'
 
 if defined?(Rails) && ENV['ZETA_HTTP_USER'].blank? && ENV['ZETA_HTTP_PASSWORD'].blank?
-  ENV['ZETA_HTTP_USER'] = Rails.application.config_for(:zeta).fetch('user')
-  ENV['ZETA_HTTP_PASSWORD'] = Rails.application.config_for(:zeta).fetch('api_key')
+  ENV['ZETA_HTTP_USER'] = Rails.application.config_for(:zeta)['user']
+  ENV['ZETA_HTTP_PASSWORD'] = Rails.application.config_for(:zeta)['api_key']
 end
 
 RSpec.describe "Zeta infrastructure", order: :defined do

@@ -1,3 +1,6 @@
+# 2.1.0
+- Bump lacerda to 2.1.0 (fix rspec reporter, allow to validate internal objects)
+- Add `zeta/rspec/autorun_all` to replace `Zeta::RSpec.run`
 # 2.0.0
 - Update to lacerda 2.0: adds enum support and raises parsing errors instead of silently returning an empty contract
 

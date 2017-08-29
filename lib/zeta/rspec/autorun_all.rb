@@ -7,18 +7,20 @@ if defined?(Rails) && ENV['ZETA_HTTP_USER'].blank? && ENV['ZETA_HTTP_PASSWORD'].
 end
 
 RSpec.describe 'Zeta infrastructure', order: :defined do
-  it 'has a correctly configured current service' do
-    expect do
-      Zeta.config
-      Zeta.infrastructure
-    end.to_not raise_error
-  end
+  context 'the current service' do
+    it 'is correctly configured' do
+      expect do
+        Zeta.config
+        Zeta.infrastructure
+      end.to_not raise_error
+    end
 
-  it 'can download the infrastructure contracts (requires network connection)' do
-    expect do
-      Zeta.verbose = false
-      Zeta.update_contracts
-    end.to_not raise_error
+    it 'can download the infrastructure contracts (requires network connection)' do
+      expect do
+        Zeta.verbose = false
+        Zeta.update_contracts
+      end.to_not raise_error
+    end
   end
 
   context 'contract validation' do

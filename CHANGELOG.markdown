@@ -1,3 +1,6 @@
+# 2.1.2
+- Add a context to prevent rspec from running context before other tests in autorun_all
+
 # 2.1.1
 - Bump lacerda to 2.1.2
 - Fix issues with nested describes/its/contexts

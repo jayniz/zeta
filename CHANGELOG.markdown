@@ -1,5 +1,5 @@
 # 2.1.1
-- Bump lacerda to 2.1.1
+- Bump lacerda to 2.1.2
 - Fix issues with nested describes/its/contexts
 
 # 2.1.0

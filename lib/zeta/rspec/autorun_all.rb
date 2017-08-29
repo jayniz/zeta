@@ -6,22 +6,22 @@ if defined?(Rails) && ENV['ZETA_HTTP_USER'].blank? && ENV['ZETA_HTTP_PASSWORD'].
   ENV['ZETA_HTTP_PASSWORD'] = Rails.application.config_for(:zeta)['api_key']
 end
 
-RSpec.describe "Zeta infrastructure", order: :defined do
-  it "has a correctly configured current service" do
-    expect{
+RSpec.describe 'Zeta infrastructure', order: :defined do
+  it 'has a correctly configured current service' do
+    expect do
       Zeta.config
       Zeta.infrastructure
-    }.to_not raise_error
+    end.to_not raise_error
   end
 
-  it "can download the infrastructure contracts (requires network connection)" do
-    expect{
+  it 'can download the infrastructure contracts (requires network connection)' do
+    expect do
       Zeta.verbose = false
       Zeta.update_contracts
-    }.to_not raise_error
+    end.to_not raise_error
   end
 
-  it "has a valid infrastructure" do
-    expect(Zeta.contracts_fulfilled?(Lacerda::Reporters::RSpec.new)).to eq true
+  context 'contract validation' do
+    Zeta.contracts_fulfilled?(Lacerda::Reporters::RSpec.new)
   end
 end

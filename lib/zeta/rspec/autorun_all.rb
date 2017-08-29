@@ -22,6 +22,6 @@ RSpec.describe 'Zeta infrastructure', order: :defined do
   end
 
   context 'contract validation' do
-    Zeta.contracts_fulfilled?(Lacerda::Reporters::RSpec.new)
+    Zeta.contracts_fulfilled?(Lacerda::Reporters::RSpec.new(self))
   end
 end

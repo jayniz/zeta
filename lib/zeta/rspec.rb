@@ -1,27 +1,22 @@
 require 'lacerda/reporters/rspec'
 require 'zeta'
 
-# Include this file in your spec/spec_helper.rb
 class Zeta::RSpec
   def self.run
-    RSpec.describe "Update Zeta infrastructure once", order: :defined do
-      it "download infrastructure (requires network connection)" do
-        expect{
-          Zeta.config
-          Zeta.infrastructure
-        }.to_not raise_error
-      end
+    # Download Infrastructure
+    Zeta.config
+    Zeta.infrastructure
 
-      it "download specifications (requires network connection)" do
-        expect{
-          Zeta.verbose = false
-          Zeta.update_contracts
-        }.to_not raise_error
-      end
+    # Update Contracts
+    Zeta.verbose = false
+    Zeta.update_contracts
 
-      it "validate infrastructure" do
-        expect(Zeta.contracts_fulfilled?(Lacerda::Reporters::RSpec.new)).to eq true
-      end
-    end
+    # Validate Infrastructure
+    # NOTE: Expectations are defined by .contracts_fulfilled?
+    #
+    # Whats the structure of this expectations?
+    # https://github.com/moviepilot/lacerda/blob/master/lib/lacerda/reporters/rspec.rb
+    #
+    Zeta.contracts_fulfilled?(Lacerda::Reporters::RSpec.new)
   end
 end

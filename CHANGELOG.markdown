@@ -1,3 +1,7 @@
+# [2.1.4] - 2017-09-15
+### Fixed
+- Fix `Zeta::RSpec.run`: Ensure that proper error messages are displayed if the RSpec infrastructure validation fails.
+
 # 2.1.3
 - ...Remove contexts, because that doesn't work either.
 
